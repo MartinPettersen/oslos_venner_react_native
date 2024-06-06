@@ -6,18 +6,28 @@ const { width, height } = Dimensions.get("window");
 
 const FORUMS = ["Robotics", "Books", "Sport"];
 const THREADS = [{subject: "Robotics are cool", author: "Human", date: "10/10/2020", replies: "40"}, {subject: "Robots are better", author: "NotaRobot", date: "12/10/2022", replies: "10"}, {subject: "Evil robot Overlords", author: "Subterfuge", date: "10/09/2008", replies: "1"}];
+const REPLIES = [{message: "Robotics are cool", author: "Human", date: "10/10/2020", replies: "40",}, {message: "Robots are better", author: "NotaRobot", date: "12/10/2022", replies: "10"}, {message: "Evil robot Overlords", author: "Subterfuge", date: "10/09/2008", replies: "1"}];
 
 
 const Thread = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>Robotics</Text>
-      <View style={styles.button}>
-          <Text style={styles.buttonText}>Nytt Innlegg</Text>
+      <View style={styles.thread}>
+          <Text style={styles.threadText}>Headline</Text>
+          <Text style={styles.threadText}>Author</Text>
+          <Text style={styles.threadText}>Dette var da veldig relevant for vår hverdag. Utrolig interesangt</Text>
+        <View style={styles.footer}>
+          <Text style={styles.threadText}>Svar</Text>
+          <Text style={styles.threadText}>#8</Text>
+          <Text style={styles.threadText}>Edited</Text>
+          <Text style={styles.threadText}>08/09/2010</Text>
+            
+        </View>
+
       </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {THREADS.map((thread, index) => (
-          <ReplyDisplay key={index} subject={thread.subject} author={thread.author} date={thread.date} replies={thread.replies} />
+        {REPLIES.map((reply, index) => (
+          <ReplyDisplay key={index} message={reply.message} author={reply.author} date={reply.date} replies={reply.replies} />
         ))}
       </ScrollView>
     </View>
@@ -39,13 +49,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 20,
   },
-  button: {
+  thread: {
     backgroundColor: "#27272a",
-    width: "60%",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 60,
-    marginBottom: 0,    
+    width: "90%",
+    padding: 8,
+    height: "40%",
+    justifyContent: 'space-between', 
+    marginBottom: 40,
+
   },
   display: {
     backgroundColor: "#27272a",
@@ -59,7 +70,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginVertical: 10,
   },
-  buttonText: {
+  threadText: {
     fontSize: 20,
     marginVertical: 10,
     color: 'white'
@@ -77,6 +88,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 10,
   },
+  footer:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });
 
 export default Thread;

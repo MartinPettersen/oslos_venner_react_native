@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     height: "18%",
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: '#27272a'
   },
   logoText: {
     fontFamily: "AlexBrush_400Regular",
