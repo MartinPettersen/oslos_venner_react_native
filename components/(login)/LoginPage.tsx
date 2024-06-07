@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  Button,
 } from "react-native";
 
 const { width, height } = Dimensions.get("window");
@@ -15,33 +16,41 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleLogin = () => {
+    console.log("trying to log inne");
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Login</Text>
       <View style={styles.formContainer}>
-
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Epost: </Text>
-        <TextInput
-          placeholder="Email"
-          onChangeText={(text: string) => setEmail(text)}
-          value={email}
-          style={styles.inputField}
+        <View style={styles.inputContainer}>
+          <Text style={styles.text}>Epost: </Text>
+          <TextInput
+            placeholder="Email"
+            onChangeText={(text: string) => setEmail(text)}
+            value={email}
+            style={styles.inputField}
           />
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Passord: </Text>
-        <TextInput
-          placeholder="Passord"
-          onChangeText={(text: string) => setPassword(text)}
-          value={email}
-          style={styles.inputField}
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.text}>Passord: </Text>
+          <TextInput
+            placeholder="Passord"
+            onChangeText={(text: string) => setPassword(text)}
+            value={password}
+            style={styles.inputField}
           />
+        </View>
       </View>
-          </View>
       <TouchableOpacity>
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Nytt Innlegg</Text>
+          <Button
+            title="Login"
+            onPress={() => handleLogin()}
+            disabled={email === "" && email === ""}
+            style={styles.buttonText}
+          />
         </View>
       </TouchableOpacity>
     </View>
@@ -105,7 +114,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     width: 200,
-    paddingBottom: 5
+    paddingBottom: 5,
   },
   inputField: {
     fontSize: 20,
@@ -117,7 +126,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-  }
+  },
 });
 
 export default LoginPage;
