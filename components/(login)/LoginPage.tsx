@@ -15,10 +15,11 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Login</Text>
+      <View style={styles.formContainer}>
+
       <View style={styles.inputContainer}>
         <Text style={styles.text}>Epost: </Text>
         <TextInput
@@ -26,7 +27,7 @@ const LoginPage = () => {
           onChangeText={(text: string) => setEmail(text)}
           value={email}
           style={styles.inputField}
-        />
+          />
       </View>
       <View style={styles.inputContainer}>
         <Text style={styles.text}>Passord: </Text>
@@ -35,8 +36,9 @@ const LoginPage = () => {
           onChangeText={(text: string) => setPassword(text)}
           value={email}
           style={styles.inputField}
-        />
+          />
       </View>
+          </View>
       <TouchableOpacity>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Nytt Innlegg</Text>
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 60,
     marginBottom: 0,
+    marginTop: 40,
   },
   display: {
     backgroundColor: "#27272a",
@@ -101,6 +104,8 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     flexDirection: "row",
+    width: 200,
+    paddingBottom: 5
   },
   inputField: {
     fontSize: 20,
@@ -108,6 +113,11 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     width: "40%",
   },
+  formContainer: {
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
 
 export default LoginPage;
