@@ -2,23 +2,51 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import ForumDisplay from "./ForumDisplay";
 import ThreadDisplay from "./ThreadDisplay";
-
+import { useRoute } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 const FORUMS = ["Robotics", "Books", "Sport"];
-const THREADS = [{subject: "Robotics are cool", author: "Human", date: "10/10/2020", replies: "40"}, {subject: "Robots are better", author: "NotaRobot", date: "12/10/2022", replies: "10"}, {subject: "Evil robot Overlords", author: "Subterfuge", date: "10/09/2008", replies: "1"}];
-
+const THREADS = [
+  {
+    subject: "Robotics are cool",
+    author: "Human",
+    date: "10/10/2020",
+    replies: "40",
+  },
+  {
+    subject: "Robots are better",
+    author: "NotaRobot",
+    date: "12/10/2022",
+    replies: "10",
+  },
+  {
+    subject: "Evil robot Overlords",
+    author: "Subterfuge",
+    date: "10/09/2008",
+    replies: "1",
+  },
+];
 
 const Forum = () => {
+  const route = useRoute();
+  console.log(route.params)
+  const { forum } = route.params as { forum: string };
+    console.log(forum)
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>Robotics</Text>
+      <Text style={styles.headline}>Robotics {forum}</Text>
       <View style={styles.button}>
-          <Text style={styles.buttonText}>Nytt Innlegg</Text>
+        <Text style={styles.buttonText}>Nytt Innlegg</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {THREADS.map((thread, index) => (
-          <ThreadDisplay key={index} subject={thread.subject} author={thread.author} date={thread.date} replies={thread.replies} />
+          <ThreadDisplay
+            key={index}
+            subject={thread.subject}
+            author={thread.author}
+            date={thread.date}
+            replies={thread.replies}
+          />
         ))}
       </ScrollView>
     </View>
@@ -37,7 +65,7 @@ const styles = StyleSheet.create({
   },
   headline: {
     fontSize: 40,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   button: {
@@ -46,7 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,    
+    marginBottom: 0,
   },
   display: {
     backgroundColor: "#27272a",
@@ -63,7 +91,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 20,
     marginVertical: 10,
-    color: 'white'
+    color: "white",
   },
   displayText: {
     fontSize: 30,

@@ -15,7 +15,7 @@ export interface Forum {
   updatedAt: string;
 }
 
-const Forums = () => {
+const Forums = ({ navigation }: any) => {
 
   const [forums, setForums] = useState<Forum[]>([])
 
@@ -35,8 +35,10 @@ const Forums = () => {
           })
         })
         setForums(forums)
+        console.log(forums)
       }
     })
+    
   }, [])
 
   return (
@@ -44,7 +46,8 @@ const Forums = () => {
       <Text style={styles.headline}>Forums</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {forums.map((forum, index) => (
-          <ForumDisplay key={index} forum={forum.label} />
+          
+          <ForumDisplay key={index} forum={forum.label} navigation={navigation}/>
         ))}
       </ScrollView>
     </View>
