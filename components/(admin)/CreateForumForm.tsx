@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,46 +9,65 @@ import {
   TextInput,
   Button,
 } from "react-native";
+import { FIRESTORE_DB } from "../../firebaseConfig";
+import { addDoc, collection } from "firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
-const LoginPage = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export interface Forum {
+    label: string;
+    threads: string[];
+    createdBy: string;
+    updatedAt: string;
+}
 
-  const handleLogin = () => {
-    console.log("trying to log inne");
-  };
+const CreateForumForm = () => {
+
+    
+const [label, setLabel] = useState("")
+const [threads, setThreads] = useState([])
+const [createdBy, setCreatedBy] = useState("TestAdmin")
+const [createdAt, setCreatedAt] = useState("")
+const [updatedAt, setUpdated] = useState("")
+
+
+  const handleAddForum = async() => {
+    console.log("trying to Add Forum");
+    const today = new Date()
+    setCreatedAt(today.toString())
+    setUpdated(today.toString())
+    console.log(today)
+    const doc = await addDoc(collection(FIRESTORE_DB, 'forums'), { label: label, threads: threads, createdBy: createdBy, createdAt: today.toString(), updatedAt: today.toString()} )
+    setLabel("")
+    setCreatedAt("")
+    setUpdated("")
+    
+    };
+
+  useEffect(() => {
+  },[])
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>Login</Text>
+      <Text style={styles.headline}>Opprett Nytt Forum</Text>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
-          <Text style={styles.text}>Epost: </Text>
+          <Text style={styles.text}>Tittel: </Text>
           <TextInput
-            placeholder="Email"
-            onChangeText={(text: string) => setEmail(text)}
-            value={email}
+            placeholder="Tittel"
+            onChangeText={(text: string) => setLabel(text)}
+            value={label}
             style={styles.inputField}
           />
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Passord: </Text>
-          <TextInput
-            placeholder="Passord"
-            onChangeText={(text: string) => setPassword(text)}
-            value={password}
-            style={styles.inputField}
-          />
-        </View>
+
       </View>
         <TouchableOpacity
-          onPress={() => handleLogin()}
-          disabled={email === "" && email === ""}
+          onPress={() => handleAddForum()}
+          disabled={label === ""}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>Opprett Forum</Text>
         </TouchableOpacity>
     </View>
   );
@@ -126,4 +145,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginPage;
+export default CreateForumForm;

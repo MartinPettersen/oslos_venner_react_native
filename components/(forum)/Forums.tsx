@@ -1,18 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import ForumDisplay from "./ForumDisplay";
+import { FIRESTORE_DB } from "../../firebaseConfig";
+import { collection, onSnapshot } from "@firebase/firestore";
 
 const { width, height } = Dimensions.get("window");
 
 const FORUMS = ["Robotics", "Books", "Sport"];
 
+export interface Forum {
+  label: string;
+  threads: string[];
+  createdBy: string;
+  updatedAt: string;
+}
+
 const Forums = () => {
+
+  const [forums, setForums] = useState<Forum[]>([])
+
+  useEffect(() => {
+    const forumRef = collection(FIRESTORE_DB, 'forums')
+
+    const subscriber = onSnapshot(forumRef, {
+      next: (snapshot) => {
+        const forums: Forum[] = [];
+        snapshot.docs.forEach(doc => {
+          console.log(doc.data())
+          forums.push({
+            label: doc.data().label,
+            threads: doc.data().threads,
+            createdBy: doc.data().createdBy,
+            updatedAt: doc.data().updatedAt,
+          })
+        })
+        setForums(forums)
+      }
+    })
+  }, [])
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Forums</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {FORUMS.map((forum, index) => (
-          <ForumDisplay key={index} forum={forum} />
+        {forums.map((forum, index) => (
+          <ForumDisplay key={index} forum={forum.label} />
         ))}
       </ScrollView>
     </View>
