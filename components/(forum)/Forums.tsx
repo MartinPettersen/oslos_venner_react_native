@@ -47,7 +47,7 @@ const Forums = ({ navigation }: any) => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         {forums.map((forum, index) => (
           
-          <ForumDisplay key={index} forum={forum.label} navigation={navigation}/>
+          <ForumDisplay key={index} forum={forum.label} threads={forum.threads} navigation={navigation}/>
         ))}
       </ScrollView>
     </View>

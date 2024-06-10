@@ -2,7 +2,8 @@ import React from "react";
 import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
 import ForumDisplay from "./ForumDisplay";
 import ThreadDisplay from "./ThreadDisplay";
-import { useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { ForumScreenParams } from "../../utils/ForumScreenParams";
 const { width, height } = Dimensions.get("window");
 
 const FORUMS = ["Robotics", "Books", "Sport"];
@@ -28,10 +29,23 @@ const THREADS = [
 ];
 
 const Forum = () => {
-  const route = useRoute();
-  console.log(route.params)
-  const { forum } = route.params as { forum: string };
-    console.log(forum)
+  
+  //const route = useRoute();
+  //console.log(route.params)
+  
+  const route =
+    useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
+  const { forum, threads } = route.params;
+  console.log(forum);
+  
+  if (!forum || !threads) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.headline}>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Robotics {forum}</Text>
@@ -51,6 +65,7 @@ const Forum = () => {
       </ScrollView>
     </View>
   );
+  
 };
 
 const styles = StyleSheet.create({

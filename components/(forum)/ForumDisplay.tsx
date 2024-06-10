@@ -1,23 +1,30 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-
-
+import { ForumScreenParams } from "../../utils/ForumScreenParams";
 
 type Props = {
   forum: string;
+  threads: string[];
   navigation: any;
 };
 
-const ForumDisplay = ({ forum }: Props) => {
+const ForumDisplay = ({ forum, threads }: Props) => {
   const navigation = useNavigation();
+  console.log(forum)
   return (
-    <TouchableOpacity
-      style={styles.display}
-      onPress={() => navigation.navigate("Forum", { forum })}
-    >
-      <Text style={styles.displayText}>{forum}</Text>
-    </TouchableOpacity>
+    <View>
+      { forum ?  
+      <TouchableOpacity
+        style={styles.display}
+        onPress={() =>
+          navigation.navigate("Forum", { forum, threads } as ForumScreenParams)
+        }
+      >
+        <Text style={styles.displayText}>{forum}</Text>
+      </TouchableOpacity>
+      :null}
+    </View>
   );
 };
 
