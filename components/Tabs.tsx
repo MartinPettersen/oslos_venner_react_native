@@ -8,6 +8,8 @@ import { Feather } from "@expo/vector-icons";
 import List from '../screens/List';
 import Login from '../screens/Login';
 import CreateForum from '../screens/CreateForum';
+import CreateThreadForm from './(thread)/CreateThreadForm';
+import CreateThreadPage from '../screens/CreateThreadPage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -23,6 +25,11 @@ const HomeStack = () => {
       <Stack.Screen 
         name="Forum" 
         component={Forum} 
+        options={{ headerShown: false }} 
+      />
+      <Stack.Screen 
+        name="CreateThreadPage" 
+        component={CreateThreadPage} 
         options={{ headerShown: false }} 
       />
     </Stack.Navigator>
@@ -48,21 +55,22 @@ const Tabs = () => {
         },
       }}
     >
-      <Tab.Screen 
-        name="Login" 
-        component={Login} 
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Feather name="lock" size={25} color={focused ? 'pink' : 'white'} />
-          ),
-        }} 
-      />
+      
       <Tab.Screen 
         name="Home" 
         component={HomeStack} 
         options={{
           tabBarIcon: ({ focused }) => (
             <Feather name="coffee" size={25} color={focused ? 'pink' : 'white'} />
+          ),
+        }} 
+      />
+      <Tab.Screen 
+        name="Login" 
+        component={Login} 
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <Feather name="lock" size={25} color={focused ? 'pink' : 'white'} />
           ),
         }} 
       />

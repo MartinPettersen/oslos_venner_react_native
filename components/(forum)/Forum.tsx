@@ -1,9 +1,18 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import ForumDisplay from "./ForumDisplay";
 import ThreadDisplay from "./ThreadDisplay";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
+import { collection, onSnapshot } from "firebase/firestore";
+import { FIRESTORE_DB } from "../../firebaseConfig";
 const { width, height } = Dimensions.get("window");
 
 const FORUMS = ["Robotics", "Books", "Sport"];
@@ -29,15 +38,42 @@ const THREADS = [
 ];
 
 const Forum = () => {
-  
   //const route = useRoute();
   //console.log(route.params)
-  
+  const navigation = useNavigation();
+
+  const [threads, setThreads] = useState([]);
+
+  useEffect(() => {
+    const forumRef = collection(FIRESTORE_DB, "threads");
+
+    const subscriber = onSnapshot(forumRef, {
+      next: (snapshot) => {
+        const threads: any[] = [];
+        snapshot.docs.forEach((doc) => {
+          console.log(doc.data());
+          threads.push({
+            id: doc.data().id,
+            headline: doc.data().headline,
+            userName: doc.data().userName,
+            content: doc.data().content,
+            forumLabel: doc.data().forumLabel,
+            replies: doc.data().replies,
+            createdBy: doc.data().createdBy,
+            updatedAt: doc.data().updatedAt,
+          });
+        });
+        setThreads(threads);
+        console.log(threads);
+      },
+    });
+  }, []);
+
   const route =
     useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
-  const { forum, threads } = route.params;
+  const { forum } = route.params;
   console.log(forum);
-  
+
   if (!forum || !threads) {
     return (
       <View style={styles.container}>
@@ -48,10 +84,14 @@ const Forum = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>Robotics {forum}</Text>
-      <View style={styles.button}>
+      <Text style={styles.headline}>{forum}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("CreateThreadPage", { forum })}
+      >
         <Text style={styles.buttonText}>Nytt Innlegg</Text>
-      </View>
+      </TouchableOpacity>
+
       <ScrollView contentContainerStyle={styles.scrollView}>
         {THREADS.map((thread, index) => (
           <ThreadDisplay
@@ -65,7 +105,6 @@ const Forum = () => {
       </ScrollView>
     </View>
   );
-  
 };
 
 const styles = StyleSheet.create({
