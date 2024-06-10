@@ -10,6 +10,9 @@ import ForumContainer from "./screens/ForumContainer";
 import ThreadPage from "./screens/ThreadPage";
 import { Feather } from "@expo/vector-icons"
 import Tabs from "./components/Tabs";
+import { useEffect, useState } from "react";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { FIREBASE_AUTH } from "./firebaseConfig";
 
 
 const Tab = createBottomTabNavigator();
@@ -22,6 +25,16 @@ const Tab = createBottomTabNavigator();
 */
 
 export default function App() {
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged( FIREBASE_AUTH, (user) => {
+      console.log('user', user)
+      setUser(user)
+    })
+  },[])
+
   return (
     <NavigationContainer>
       <Logo />

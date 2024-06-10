@@ -8,20 +8,50 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
+  ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
+import { FIREBASE_AUTH } from "../../firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 const { width, height } = Dimensions.get("window");
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const auth = FIREBASE_AUTH;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     console.log("trying to log inne");
+    setLoading(true);
+    try {
+      const response = await signInWithEmailAndPassword(auth, email, password);
+      console.log(response)
+    } catch ( error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+
   };
+
+  const handleSignUp = async () => {
+    console.log("trying to log inne");
+    setLoading(true);
+    try {
+      const response = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(response)
+    } catch ( error) {
+      console.log(error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <View style={styles.container}>
+      <KeyboardAvoidingView behaviour="padding">
       <Text style={styles.headline}>Login</Text>
       <View style={styles.formContainer}>
         <View style={styles.inputContainer}>
@@ -30,12 +60,14 @@ const LoginPage = () => {
             placeholder="Email"
             onChangeText={(text: string) => setEmail(text)}
             value={email}
+            autoCapitalize="none"
             style={styles.inputField}
           />
         </View>
         <View style={styles.inputContainer}>
           <Text style={styles.text}>Passord: </Text>
           <TextInput
+            secureTextEntry={true}
             placeholder="Passord"
             onChangeText={(text: string) => setPassword(text)}
             value={password}
@@ -43,13 +75,27 @@ const LoginPage = () => {
           />
         </View>
       </View>
-        <TouchableOpacity
-          onPress={() => handleLogin()}
-          disabled={email === "" && email === ""}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator size="large" color="black" />
+      ) : (
+        <>
+          <TouchableOpacity
+            onPress={() => handleLogin()}
+            disabled={email === "" && email === ""}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleSignUp()}
+            disabled={email === "" && email === ""}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Opprett Bruker</Text>
+          </TouchableOpacity>
+        </>
+      )}
+      </KeyboardAvoidingView>
     </View>
   );
 };
