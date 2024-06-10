@@ -85,7 +85,38 @@ const Thread = () => {
         console.log(threads);
       },
     });
+
   }, []);
+
+
+  const [replies, setReplies] = useState([]);
+
+  useEffect(() => {
+    const forumRef = collection(FIRESTORE_DB, "replies");
+
+    const subscriber = onSnapshot(
+      query(forumRef, where("parentId", "==", id)), 
+      {
+        next: (snapshot) => {
+          const replies: any[] = [];
+          snapshot.docs.forEach((doc) => {
+            console.log(doc.data());
+            replies.push({
+              postId: doc.data().postId,
+              parentId: doc.data().parentId,
+              userName: doc.data().userName,
+              reply: doc.data().reply,
+              children: doc.data().children,
+              updatedAt: doc.data().updatedAt,
+            });
+          });
+          setReplies(replies);
+          console.log(replies);
+        },
+      }
+    );
+  }, []);
+
 
   const [postId, setPostId] = useState<string>("");
   const [reply, setReply] = useState<string>("");
@@ -137,7 +168,7 @@ const Thread = () => {
           <TouchableOpacity onPress={openReplyModal}>
             <Text style={styles.threadText}>Svar</Text>
           </TouchableOpacity>
-          <Text style={styles.threadText}>#{thread.replies.length}</Text>
+          <Text style={styles.threadText}>#{replies.length}</Text>
           <View>
             {thread.createdAt != thread.updatedAt ? (
               <Text style={styles.threadText}>Edited</Text>
@@ -149,13 +180,13 @@ const Thread = () => {
         </View>
       </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {REPLIES.map((reply, index) => (
+        {replies.map((reply, index) => (
           <ReplyDisplay
             key={index}
-            message={reply.message}
-            author={reply.author}
-            date={reply.date}
-            replies={reply.replies}
+            message={reply.reply}
+            author={reply.userName}
+            date={reply.createdAt}
+            replies={reply.children}
           />
         ))}
       </ScrollView>
