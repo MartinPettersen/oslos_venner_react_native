@@ -17,9 +17,10 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
+import { User, onAuthStateChanged } from "firebase/auth";
 
 const { width, height } = Dimensions.get("window");
 
@@ -150,6 +151,17 @@ const Thread = () => {
     closeReplyModal();
   };
 
+
+
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged( FIREBASE_AUTH, (user) => {
+      console.log('user', user)
+      setUser(user)
+    })
+  },[])
+
   if (!thread) {
     return (
       <View style={styles.container}>
@@ -165,7 +177,7 @@ const Thread = () => {
         <Text style={styles.threadText}>{thread.userName}</Text>
         <Text style={styles.threadText}>{thread.content}</Text>
         <View style={styles.footer}>
-          <TouchableOpacity onPress={openReplyModal}>
+          <TouchableOpacity onPress={() => user ? openReplyModal() : navigation.navigate("Login")}>
             <Text style={styles.threadText}>Svar</Text>
           </TouchableOpacity>
           <Text style={styles.threadText}>#{replies.length}</Text>

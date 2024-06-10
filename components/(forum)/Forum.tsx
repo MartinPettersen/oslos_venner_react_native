@@ -12,7 +12,8 @@ import ThreadDisplay from "./ThreadDisplay";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
+import { User, onAuthStateChanged } from "firebase/auth";
 const { width, height } = Dimensions.get("window");
 
 const THREADS = [
@@ -84,12 +85,22 @@ const Forum = () => {
     );
   }
 
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    onAuthStateChanged( FIREBASE_AUTH, (user) => {
+      console.log('user', user)
+      setUser(user)
+    })
+  },[])
+
+
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>{forum}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("CreateThreadPage", { forum })}
+        onPress={() => user? navigation.navigate("CreateThreadPage", { forum }): navigation.navigate("Login")}
       >
         <Text style={styles.buttonText}>Nytt Innlegg</Text>
       </TouchableOpacity>
