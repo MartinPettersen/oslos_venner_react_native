@@ -57,7 +57,7 @@ const LoginPage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "#FCD3E9",
     alignItems: "center",
     justifyContent: "flex-start",
     width: width,

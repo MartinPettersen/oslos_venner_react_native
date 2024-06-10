@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     fontFamily: "AlexBrush_400Regular",
     fontSize: 70,
     paddingTop: 30,
-    color: 'pink'
+    color: '#FCD3E9'
   },
 });
 

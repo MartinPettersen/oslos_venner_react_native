@@ -11,11 +11,10 @@ import ForumDisplay from "./ForumDisplay";
 import ThreadDisplay from "./ThreadDisplay";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 const { width, height } = Dimensions.get("window");
 
-const FORUMS = ["Robotics", "Books", "Sport"];
 const THREADS = [
   {
     subject: "Robotics are cool",
@@ -42,37 +41,40 @@ const Forum = () => {
   //console.log(route.params)
   const navigation = useNavigation();
 
+  const route =
+    useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
+  const { forum } = route.params;
+  console.log(forum);
+
   const [threads, setThreads] = useState([]);
 
   useEffect(() => {
     const forumRef = collection(FIRESTORE_DB, "threads");
 
-    const subscriber = onSnapshot(forumRef, {
-      next: (snapshot) => {
-        const threads: any[] = [];
-        snapshot.docs.forEach((doc) => {
-          console.log(doc.data());
-          threads.push({
-            id: doc.data().id,
-            headline: doc.data().headline,
-            userName: doc.data().userName,
-            content: doc.data().content,
-            forumLabel: doc.data().forumLabel,
-            replies: doc.data().replies,
-            createdBy: doc.data().createdBy,
-            updatedAt: doc.data().updatedAt,
+    const subscriber = onSnapshot(
+      query(forumRef, where("forumLabel", "==", forum)), 
+      {
+        next: (snapshot) => {
+          const threads: any[] = [];
+          snapshot.docs.forEach((doc) => {
+            console.log(doc.data());
+            threads.push({
+              id: doc.data().id,
+              headline: doc.data().headline,
+              userName: doc.data().userName,
+              content: doc.data().content,
+              forumLabel: doc.data().forumLabel,
+              replies: doc.data().replies,
+              createdBy: doc.data().createdBy,
+              updatedAt: doc.data().updatedAt,
+            });
           });
-        });
-        setThreads(threads);
-        console.log(threads);
-      },
-    });
+          setThreads(threads);
+          console.log(threads);
+        },
+      }
+    );
   }, []);
-
-  const route =
-    useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
-  const { forum } = route.params;
-  console.log(forum);
 
   if (!forum || !threads) {
     return (
@@ -100,6 +102,7 @@ const Forum = () => {
             author={thread.userName}
             date={thread.date}
             replies={thread.replies}
+            id={thread.id}
           />
         ))}
       </ScrollView>
@@ -110,7 +113,7 @@ const Forum = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "pink",
+    backgroundColor: "#FCD3E9",
     alignItems: "center",
     justifyContent: "flex-start",
     width: width,

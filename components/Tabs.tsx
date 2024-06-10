@@ -32,6 +32,11 @@ const HomeStack = () => {
         component={CreateThreadPage} 
         options={{ headerShown: false }} 
       />
+      <Stack.Screen 
+        name="ThreadPage" 
+        component={ThreadPage} 
+        options={{ headerShown: false }} 
+      />
     </Stack.Navigator>
   );
 };
@@ -40,7 +45,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarActiveTintColor: "pink",
+        tabBarActiveTintColor: "#FCD3E9",
         tabBarInactiveTintColor: "white",
         tabBarStyle: {
           backgroundColor: "#27272a",
@@ -51,7 +56,7 @@ const Tabs = () => {
         headerTitleStyle: {
           fontWeight: "bold",
           fontSize: 25,
-          color: "pink",
+          color: "#FCD3E9",
         },
       }}
     >
@@ -59,36 +64,36 @@ const Tabs = () => {
       <Tab.Screen 
         name="Home" 
         component={HomeStack} 
-        options={{
+        options={{ headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Feather name="coffee" size={25} color={focused ? 'pink' : 'white'} />
+            <Feather name="coffee" size={25} color={focused ? '#FCD3E9' : 'white'} />
           ),
         }} 
       />
       <Tab.Screen 
         name="Login" 
         component={Login} 
-        options={{
+        options={{headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Feather name="lock" size={25} color={focused ? 'pink' : 'white'} />
+            <Feather name="lock" size={25} color={focused ? '#FCD3E9' : 'white'} />
           ),
         }} 
       />
       <Tab.Screen 
         name="Min Side" 
         component={ThreadPage} 
-        options={{
+        options={{ headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Feather name="home" size={25} color={focused ? 'pink' : 'white'} />
+            <Feather name="home" size={25} color={focused ? '#FCD3E9' : 'white'} />
           ),
         }} 
       />
       <Tab.Screen 
         name="Create Forum" 
         component={CreateForum} 
-        options={{
+        options={{ headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <Feather name="droplet" size={25} color={focused ? 'pink' : 'white'} />
+            <Feather name="droplet" size={25} color={focused ? '#FCD3E9' : 'white'} />
           ),
         }} 
       />
