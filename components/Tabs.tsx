@@ -5,10 +5,8 @@ import Forum from "../components/(forum)/Forum";
 import ForumContainer from "../screens/ForumContainer";
 import ThreadPage from "../screens/ThreadPage";
 import { Feather } from "@expo/vector-icons";
-import List from '../screens/List';
 import Login from '../screens/Login';
 import CreateForum from '../screens/CreateForum';
-import CreateThreadForm from './(thread)/CreateThreadForm';
 import CreateThreadPage from '../screens/CreateThreadPage';
 
 const Tab = createBottomTabNavigator();
@@ -81,7 +79,7 @@ const Tabs = () => {
       />
       <Tab.Screen 
         name="Min Side" 
-        component={ThreadPage} 
+        component={Login} 
         options={{ headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Feather name="home" size={25} color={focused ? '#FCD3E9' : 'white'} />

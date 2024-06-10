@@ -17,54 +17,50 @@ import { useRoute } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 
 export interface Forum {
-    label: string;
-    threads: string[];
-    createdBy: string;
-    updatedAt: string;
+  label: string;
+  threads: string[];
+  createdBy: string;
+  updatedAt: string;
 }
 
-
-
 const CreateThreadForm = () => {
+  const route = useRoute();
+  console.log(route.params.forum);
 
-    const route = useRoute();
-    console.log(route.params.forum)
+  const threadId = uuidv4();
 
-    const threadId = uuidv4();
+  const [id, setId] = useState<string>(threadId);
+  const [headline, setHeadline] = useState<string>("");
+  const [userName, setUserName] = useState<string>("test_dude");
+  const [content, setContent] = useState<string>("");
+  const [forumLabel, setForumLabel] = useState<string>(route.params.forum);
+  const [replies, setReplies] = useState<any[]>([]);
+  const [createdAt, setCreatedAt] = useState<string>("");
+  const [updatedAt, setUpdatedAt] = useState<string>("");
 
-    
-    const [id, setId] = useState<string>(threadId);
-    const [headline, setHeadline] = useState<string>("");
-    const [userName, setUserName] = useState<string>("test_dude");
-    const [content, setContent] = useState<string>("");
-    const [forumLabel, setForumLabel] = useState<string>(route.params.forum);
-    const [replies, setReplies] = useState<any[]>([]); 
-    const [createdAt, setCreatedAt] = useState<string>("");
-    const [updatedAt, setUpdatedAt] = useState<string>("");
-
-
-
-
-  const handleAddThread = async() => {
-
-
-    
+  const handleAddThread = async () => {
     console.log("trying to Add Thread");
 
+    const today = new Date();
+    setCreatedAt(today.toString());
+    setUpdatedAt(today.toString());
+    console.log(today);
+    const doc = await addDoc(collection(FIRESTORE_DB, "threads"), {
+      id: id,
+      headline: headline,
+      userName: userName,
+      content: content,
+      forumLabel: forumLabel,
+      replies: replies,
+      createdAt: today.toString(),
+      updatedAt: today.toString(),
+    });
+    setHeadline("");
+    setCreatedAt("");
+    setUpdatedAt("");
+  };
 
-    const today = new Date()
-    setCreatedAt(today.toString())
-    setUpdatedAt(today.toString())
-    console.log(today)
-    const doc = await addDoc(collection(FIRESTORE_DB, 'threads'), { id: id, headline: headline, userName: userName, content: content, forumLabel: forumLabel, replies: replies, createdAt: today.toString(), updatedAt: today.toString()} )
-    setHeadline("")
-    setCreatedAt("")
-    setUpdatedAt("")
-    
-    };
-
-  useEffect(() => {
-  },[])
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
@@ -88,15 +84,14 @@ const CreateThreadForm = () => {
             style={styles.inputField}
           />
         </View>
-
       </View>
-        <TouchableOpacity
-          onPress={() => handleAddThread()}
-          disabled={headline === "" || content === ""}
-          style={styles.button}
-        >
-          <Text style={styles.buttonText}>Opprett Forum Tråd</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleAddThread()}
+        disabled={headline === "" || content === ""}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>Opprett Forum Tråd</Text>
+      </TouchableOpacity>
     </View>
   );
 };
