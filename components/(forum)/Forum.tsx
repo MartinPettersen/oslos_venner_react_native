@@ -93,11 +93,11 @@ const Forum = () => {
       </TouchableOpacity>
 
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {THREADS.map((thread, index) => (
+        {threads.map((thread, index) => (
           <ThreadDisplay
             key={index}
-            subject={thread.subject}
-            author={thread.author}
+            subject={thread.headline}
+            author={thread.userName}
             date={thread.date}
             replies={thread.replies}
           />
