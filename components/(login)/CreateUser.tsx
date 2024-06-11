@@ -3,16 +3,18 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Dimensions,
   TouchableOpacity,
   TextInput,
-  Button,
   ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
 
 const { width, height } = Dimensions.get("window");
 
@@ -29,89 +31,93 @@ const CreateUser = () => {
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response)
-    } catch ( error) {
-      console.log(error)
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
   };
 
   const handleSignUp = async () => {
     console.log("trying to log inne");
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(response)
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(response);
       await updateProfile(auth.currentUser, {
-        displayName: userName
+        displayName: userName,
       });
-    } catch ( error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behaviour="padding">
-      <Text style={styles.headline}>Opprett Bruker</Text>
-      <View style={styles.formContainer}>
-      <View style={styles.inputContainer}>
-          <Text style={styles.text}>Bruker Navn: </Text>
-          <TextInput
-            placeholder="Bruker Navn"
-            onChangeText={(text: string) => setUserName(text)}
-            value={userName}
-            autoCapitalize="none"
-            style={styles.inputField}
-          />
+        <Text style={styles.headline}>Opprett Bruker</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Bruker Navn: </Text>
+            <TextInput
+              placeholder="Bruker Navn"
+              onChangeText={(text: string) => setUserName(text)}
+              value={userName}
+              autoCapitalize="none"
+              style={styles.inputField}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Epost: </Text>
+            <TextInput
+              placeholder="Email"
+              onChangeText={(text: string) => setEmail(text)}
+              value={email}
+              autoCapitalize="none"
+              style={styles.inputField}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Passord: </Text>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Passord"
+              onChangeText={(text: string) => setPassword(text)}
+              value={password}
+              style={styles.inputField}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Gjenta Passord: </Text>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Gjenta Passord"
+              onChangeText={(text: string) => setRepeatPassword(text)}
+              value={repeatPassword}
+              style={styles.inputField}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Epost: </Text>
-          <TextInput
-            placeholder="Email"
-            onChangeText={(text: string) => setEmail(text)}
-            value={email}
-            autoCapitalize="none"
-            style={styles.inputField}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Passord: </Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder="Passord"
-            onChangeText={(text: string) => setPassword(text)}
-            value={password}
-            style={styles.inputField}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Gjenta Passord: </Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder="Gjenta Passord"
-            onChangeText={(text: string) => setRepeatPassword(text)}
-            value={repeatPassword}
-            style={styles.inputField}
-          />
-        </View>
-      </View>
-      {loading ? (
-        <ActivityIndicator size="large" color="black" />
-      ) : (
-
+        {loading ? (
+          <ActivityIndicator size="large" color="black" />
+        ) : (
           <TouchableOpacity
             onPress={() => handleSignUp()}
-            disabled={email === "" && email === ""}
+            disabled={
+              email === "" || email === "" || password != repeatPassword
+            }
             style={styles.button}
           >
             <Text style={styles.buttonText}>Opprett Bruker</Text>
           </TouchableOpacity>
-      )}
+        )}
       </KeyboardAvoidingView>
     </View>
   );

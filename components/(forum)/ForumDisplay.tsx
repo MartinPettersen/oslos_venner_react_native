@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
 
@@ -9,11 +9,14 @@ type Props = {
   navigation: any;
 };
 
+const { width, height } = Dimensions.get("window");
+
+
 const ForumDisplay = ({ forum, threads }: Props) => {
   const navigation = useNavigation();
   console.log(forum)
   return (
-    <View>
+    <View style={styles.container}>
       { forum ?  
       <TouchableOpacity
         style={styles.display}
@@ -29,6 +32,10 @@ const ForumDisplay = ({ forum, threads }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    width: width,
+    alignItems: "center",
+  },
   display: {
     backgroundColor: "#27272a",
     width: "80%",
