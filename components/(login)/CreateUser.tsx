@@ -26,18 +26,6 @@ const CreateUser = () => {
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
 
-  const handleLogin = async () => {
-    console.log("trying to log inne");
-    setLoading(true);
-    try {
-      const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleSignUp = async () => {
     console.log("trying to log inne");
@@ -61,7 +49,7 @@ const CreateUser = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behaviour="padding">
+      <KeyboardAvoidingView behaviour="padding" style={styles.container}>
         <Text style={styles.headline}>Opprett Bruker</Text>
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
