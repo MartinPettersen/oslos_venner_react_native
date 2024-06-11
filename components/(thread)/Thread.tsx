@@ -120,6 +120,7 @@ const Thread = () => {
   }, []);
 
 
+  const [user, setUser] = useState<User | null>(null);
   const [postId, setPostId] = useState<string>("");
   const [reply, setReply] = useState<string>("");
   const [userName, setUserName] = useState<string>("test_dude");
@@ -140,7 +141,7 @@ const Thread = () => {
     const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
       postId: uuidv4(),
       reply: reply,
-      userName: userName,
+      userName: user?.displayName,
       parentId: id,
       createdAt: today.toString(),
       updatedAt: today.toString(),
@@ -154,7 +155,6 @@ const Thread = () => {
 
 
 
-  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     onAuthStateChanged( FIREBASE_AUTH, (user) => {
@@ -209,7 +209,7 @@ const Thread = () => {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContentContainer}>
-            <Text style={styles.headline}>Reply to Thread</Text>
+            <Text style={styles.headline}>Skriv en kommentar</Text>
 
             <View style={styles.inputContainer}>
               <Text style={styles.text}>Svar: </Text>
@@ -257,12 +257,13 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   modalContentContainer: {
-    backgroundColor: "orange",
+    backgroundColor: "#FCD3E9",
     alignItems: "center",
     justifyContent: "flex-start",
     width: "80%",
     height: "60%",
     paddingTop: 50,
+    borderWidth: 2,
   },
   headline: {
     fontSize: 40,

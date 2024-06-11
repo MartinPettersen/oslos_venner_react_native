@@ -10,9 +10,10 @@ import {
   TextInput,
   Button,
 } from "react-native";
-import { FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
 import { useRoute } from "@react-navigation/native";
+import { User, onAuthStateChanged } from "firebase/auth";
 
 const { width, height } = Dimensions.get("window");
 
@@ -37,6 +38,7 @@ const CreateThreadForm = () => {
   const [replies, setReplies] = useState<any[]>([]);
   const [createdAt, setCreatedAt] = useState<string>("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
+  const [user, setUser] = useState<User | null>(null);
 
   const handleAddThread = async () => {
     console.log("trying to Add Thread");
@@ -48,7 +50,7 @@ const CreateThreadForm = () => {
     const doc = await addDoc(collection(FIRESTORE_DB, "threads"), {
       id: id,
       headline: headline,
-      userName: userName,
+      userName: user?.displayName,
       content: content,
       forumLabel: forumLabel,
       replies: replies,
@@ -60,7 +62,13 @@ const CreateThreadForm = () => {
     setUpdatedAt("");
   };
 
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    onAuthStateChanged( FIREBASE_AUTH, (user) => {
+      console.log('user', user)
+      setUser(user)
+    })
+  },[])
 
   return (
     <View style={styles.container}>

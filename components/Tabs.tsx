@@ -13,6 +13,7 @@ import { FIREBASE_AUTH } from "../firebaseConfig";
 import { Button } from "react-native";
 import SignOut from "./(login)/SignOut";
 import CreateUserPage from "../screens/CreateUserPage";
+import PrivateUserPage from "../screens/PrivateUserPage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -78,7 +79,7 @@ const Tabs = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="Forum"
         component={HomeStack}
         options={{
           headerShown: false,
@@ -125,12 +126,12 @@ const Tabs = () => {
       )}
       <Tab.Screen
         name="Min Side"
-        component={Login}
+        component={PrivateUserPage}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Feather
-              name="home"
+              name="user"
               size={25}
               color={focused ? "#FCD3E9" : "white"}
             />

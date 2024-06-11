@@ -159,12 +159,13 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   modalContentContainer: {
-    backgroundColor: "orange",
+    backgroundColor: "#FCD3E9",
     alignItems: "center",
     justifyContent: "flex-start",
     width: "80%",
     height: "60%",
     paddingTop: 50,
+    borderWidth: 2,
   },
   headline: {
     fontSize: 40,
