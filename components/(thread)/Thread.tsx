@@ -196,10 +196,6 @@ const Thread = () => {
         {replies.map((reply, index) => (
           <ReplyDisplay
             key={index}
-            message={reply.reply}
-            author={reply.userName}
-            date={reply.createdAt}
-            replies={reply.children}
             reply={reply}
           />
         ))}
@@ -304,12 +300,10 @@ const styles = StyleSheet.create({
     color: "white",
   },
   scrollView: {
-    flexGrow: 1,
+    
     width: width,
-    height: "30%",
-    justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 10,
+    paddingVertical: -0,
   },
   footer: {
     flexDirection: "row",

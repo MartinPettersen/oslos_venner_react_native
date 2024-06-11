@@ -1,4 +1,4 @@
-type replie = {
+type Replie = {
     postId: string,
     reply: string,
     userName: string,
