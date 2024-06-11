@@ -41,26 +41,10 @@ const LoginPage = () => {
     }
   };
 
-  const handleSignUp = async () => {
-    console.log("trying to log inne");
-    setLoading(true);
-    try {
-      const response = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behaviour="padding">
+      <KeyboardAvoidingView behaviour="padding" style={styles.container}>
         <Text style={styles.headline}>Login</Text>
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>

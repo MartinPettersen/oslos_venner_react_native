@@ -111,7 +111,7 @@ const Forum = () => {
             subject={thread.headline}
             author={thread.userName}
             date={thread.date}
-            replies={thread.replies}
+            replies={thread.replies.length}
             id={thread.id}
           />
         ))}
