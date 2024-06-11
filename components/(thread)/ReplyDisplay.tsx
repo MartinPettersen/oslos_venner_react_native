@@ -6,16 +6,19 @@ type Props = {
   author: string;
   date: string;
   replies: string;
+  reply: replie
 };
 
-const ReplyDisplay = ({ message, author, date, replies }: Props) => {
+const ReplyDisplay = ({ message, author, date, replies, reply }: Props) => {
+  console.log("createdAt:", reply.createdAt);
+  console.log("updatedAt:", reply.updatedAt);
   return (
     <View style={styles.display}>
-      <Text style={styles.displayText}>{author}</Text>
-      <Text style={styles.displayText}>{message}</Text>
+      <Text style={styles.displayText}>{reply.userName}</Text>
+      <Text style={styles.displayText}>{reply.reply}</Text>
       <View style={styles.footer}>
           <Text style={styles.displayText}>Svar</Text>
-            <Text style={styles.displayText}>Edited</Text>
+            <Text style={styles.displayText}>{reply.createdAt !== reply.updatedAt ? "Edited" : null}</Text>
 
         <Text style={styles.displayText}>{date}</Text>
       </View>

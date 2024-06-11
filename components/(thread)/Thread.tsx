@@ -83,7 +83,7 @@ const Thread = () => {
           });
         });
         setThread(threads[0]);
-        console.log(threads);
+        // console.log(threads);
       },
     });
 
@@ -108,11 +108,12 @@ const Thread = () => {
               userName: doc.data().userName,
               reply: doc.data().reply,
               children: doc.data().children,
+              createdAt: doc.data().createdAt,
               updatedAt: doc.data().updatedAt,
             });
           });
           setReplies(replies);
-          console.log(replies);
+          //console.log(replies[0]);
         },
       }
     );
@@ -199,6 +200,7 @@ const Thread = () => {
             author={reply.userName}
             date={reply.createdAt}
             replies={reply.children}
+            reply={reply}
           />
         ))}
       </ScrollView>
