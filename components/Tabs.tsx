@@ -12,6 +12,7 @@ import { User, onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "../firebaseConfig";
 import { Button } from "react-native";
 import SignOut from "./(login)/SignOut";
+import CreateUserPage from "../screens/CreateUserPage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,6 +38,11 @@ const HomeStack = () => {
       <Stack.Screen
         name="ThreadPage"
         component={ThreadPage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="CreateUserPage"
+        component={CreateUserPage}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

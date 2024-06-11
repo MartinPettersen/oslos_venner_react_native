@@ -12,7 +12,11 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");
 
@@ -22,79 +26,83 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
 
+  const navigation = useNavigation();
+
   const handleLogin = async () => {
     console.log("trying to log inne");
     setLoading(true);
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      console.log(response)
-    } catch ( error) {
-      console.log(error)
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-
   };
 
   const handleSignUp = async () => {
     console.log("trying to log inne");
     setLoading(true);
     try {
-      const response = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(response)
-    } catch ( error) {
-      console.log(error)
+      const response = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      console.log(response);
+    } catch (error) {
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView behaviour="padding">
-      <Text style={styles.headline}>Login</Text>
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Epost: </Text>
-          <TextInput
-            placeholder="Email"
-            onChangeText={(text: string) => setEmail(text)}
-            value={email}
-            autoCapitalize="none"
-            style={styles.inputField}
-          />
+        <Text style={styles.headline}>Login</Text>
+        <View style={styles.formContainer}>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Epost: </Text>
+            <TextInput
+              placeholder="Email"
+              onChangeText={(text: string) => setEmail(text)}
+              value={email}
+              autoCapitalize="none"
+              style={styles.inputField}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Passord: </Text>
+            <TextInput
+              secureTextEntry={true}
+              placeholder="Passord"
+              onChangeText={(text: string) => setPassword(text)}
+              value={password}
+              style={styles.inputField}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Passord: </Text>
-          <TextInput
-            secureTextEntry={true}
-            placeholder="Passord"
-            onChangeText={(text: string) => setPassword(text)}
-            value={password}
-            style={styles.inputField}
-          />
-        </View>
-      </View>
-      {loading ? (
-        <ActivityIndicator size="large" color="black" />
-      ) : (
-        <>
-          <TouchableOpacity
-            onPress={() => handleLogin()}
-            disabled={email === "" && email === ""}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleSignUp()}
-            disabled={email === "" && email === ""}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Opprett Bruker</Text>
-          </TouchableOpacity>
-        </>
-      )}
+        {loading ? (
+          <ActivityIndicator size="large" color="black" />
+        ) : (
+          <>
+            <TouchableOpacity
+              onPress={() => handleLogin()}
+              disabled={email === "" && email === ""}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => navigation.navigate("CreateUserPage")}
+            >
+              <Text style={styles.buttonText}>Opprett Ny Bruker</Text>
+            </TouchableOpacity>
+          </>
+        )}
       </KeyboardAvoidingView>
     </View>
   );

@@ -104,7 +104,6 @@ const Forum = () => {
       >
         <Text style={styles.buttonText}>Nytt Innlegg</Text>
       </TouchableOpacity>
-
       <ScrollView contentContainerStyle={styles.scrollView}>
         {threads.map((thread, index) => (
           <ThreadDisplay
