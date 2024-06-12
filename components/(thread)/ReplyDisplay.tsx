@@ -22,6 +22,9 @@ type Props = {
 const { width, height } = Dimensions.get("window");
 
 const ReplyDisplay = ({ reply }: Props) => {
+
+  console.log(reply)
+
   const navigation = useNavigation();
 
   const [newReply, setNewReply] = useState<string>("");

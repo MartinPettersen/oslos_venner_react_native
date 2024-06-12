@@ -49,7 +49,7 @@ const PrivateUser = () => {
     );
   };
 
-  const [replies, setReplies] = useState<Replie[]>([]);
+  const [replies, setReplies] = useState([]);
   const getReplies = (userName: string) => {
     const forumRef = collection(FIRESTORE_DB, "replies");
 
@@ -94,13 +94,15 @@ const PrivateUser = () => {
           : null}
         {replies.length > 0
           ? replies.map((reply, index) => (
-              <View style={styles.borderline}>
-                <Text>{reply.reply}</Text>
-                <ReplyDisplay key={index} reply={reply} />
-              </View>
-            ))
+            <ReplyDisplay
+              key={index}
+              reply={reply}
+            />
+          ))
+            
           : null}
       </ScrollView>
+
     </View>
   );
 };
@@ -144,7 +146,6 @@ const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
     width: width,
-    height: "30%",
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20,
