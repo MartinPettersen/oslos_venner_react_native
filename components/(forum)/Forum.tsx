@@ -38,14 +38,11 @@ const THREADS = [
 ];
 
 const Forum = () => {
-  //const route = useRoute();
-  //console.log(route.params)
   const navigation = useNavigation();
 
   const route =
     useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
   const { forum } = route.params;
-  console.log(forum);
 
   const [threads, setThreads] = useState([]);
 
@@ -58,7 +55,6 @@ const Forum = () => {
         next: (snapshot) => {
           const threads: any[] = [];
           snapshot.docs.forEach((doc) => {
-            console.log(doc.data());
             threads.push({
               id: doc.data().id,
               headline: doc.data().headline,
@@ -71,7 +67,6 @@ const Forum = () => {
             });
           });
           setThreads(threads);
-          console.log(threads);
         },
       }
     );
@@ -89,7 +84,6 @@ const Forum = () => {
 
   useEffect(() => {
     onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      console.log('user', user)
       setUser(user)
     })
   },[])

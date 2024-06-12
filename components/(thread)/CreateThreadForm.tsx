@@ -26,7 +26,6 @@ export interface Forum {
 
 const CreateThreadForm = () => {
   const route = useRoute();
-  console.log(route.params.forum);
 
   const threadId = uuidv4();
 
@@ -41,12 +40,10 @@ const CreateThreadForm = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const handleAddThread = async () => {
-    console.log("trying to Add Thread");
 
     const today = new Date();
     setCreatedAt(today.toString());
     setUpdatedAt(today.toString());
-    console.log(today);
     const doc = await addDoc(collection(FIRESTORE_DB, "threads"), {
       id: id,
       headline: headline,
@@ -65,7 +62,6 @@ const CreateThreadForm = () => {
 
   useEffect(() => {
     onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      console.log('user', user)
       setUser(user)
     })
   },[])

@@ -32,11 +32,9 @@ const [updatedAt, setUpdated] = useState("")
 
 
   const handleAddForum = async() => {
-    console.log("trying to Add Forum");
     const today = new Date()
     setCreatedAt(today.toString())
     setUpdated(today.toString())
-    console.log(today)
     const doc = await addDoc(collection(FIRESTORE_DB, 'forums'), { label: label, threads: threads, createdBy: createdBy, createdAt: today.toString(), updatedAt: today.toString()} )
     setLabel("")
     setCreatedAt("")

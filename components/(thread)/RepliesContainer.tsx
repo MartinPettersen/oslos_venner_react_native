@@ -22,7 +22,6 @@ function RepliesContainer({parentId}: Props) {
         next: (snapshot) => {
           const replies: any[] = [];
           snapshot.docs.forEach((doc) => {
-            console.log(doc.data());
             replies.push({
               postId: doc.data().postId,
               parentId: doc.data().parentId,

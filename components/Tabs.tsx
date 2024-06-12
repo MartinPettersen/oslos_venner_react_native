@@ -55,7 +55,6 @@ const Tabs = () => {
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log("user", user);
       setUser(user);
     });
   }, []);
@@ -107,7 +106,6 @@ const Tabs = () => {
             ),
           }}
         />
-        
       ) : (
         <Tab.Screen
           name="Login"
@@ -124,20 +122,22 @@ const Tabs = () => {
           }}
         />
       )}
-      <Tab.Screen
-        name="Min Side"
-        component={PrivateUserPage}
-        options={{
-          headerShown: false,
-          tabBarIcon: ({ focused }) => (
-            <Feather
-              name="user"
-              size={25}
-              color={focused ? "#FCD3E9" : "white"}
-            />
-          ),
-        }}
-      />
+      {user ? (
+        <Tab.Screen
+          name="Min Side"
+          component={PrivateUserPage}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <Feather
+                name="user"
+                size={25}
+                color={focused ? "#FCD3E9" : "white"}
+              />
+            ),
+          }}
+        />
+      ) : null}
       <Tab.Screen
         name="Create Forum"
         component={CreateForum}

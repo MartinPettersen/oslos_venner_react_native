@@ -38,10 +38,8 @@ const ReplyDisplay = ({ reply }: Props) => {
   const handleAddReply = async () => {
     const threadId = uuidv4();
 
-    console.log("trying to Add Reply");
 
     const today = new Date();
-    console.log(today);
     const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
       postId: uuidv4(),
       reply: newReply,
@@ -60,7 +58,6 @@ const ReplyDisplay = ({ reply }: Props) => {
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log("user", user);
       setUser(user);
     });
   }, []);

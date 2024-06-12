@@ -5,6 +5,7 @@ import ThreadDisplay from "../(forum)/ThreadDisplay";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
+import ReplyDisplay from "../(thread)/ReplyDisplay";
 
 const { width, height } = Dimensions.get("window");
 
@@ -13,9 +14,10 @@ const PrivateUser = () => {
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log("user", user);
       setUser(user);
-      getThreads(user?.displayName)
+      getThreads(user?.displayName);
+      getReplies(user?.displayName);
+
     });
   }, []);
 
@@ -30,7 +32,6 @@ const PrivateUser = () => {
         next: (snapshot) => {
           const threads: any[] = [];
           snapshot.docs.forEach((doc) => {
-            console.log(doc.data());
             threads.push({
               id: doc.data().id,
               headline: doc.data().headline,
@@ -43,7 +44,33 @@ const PrivateUser = () => {
             });
           });
           setThreads(threads);
-          console.log(threads);
+        },
+      }
+    );
+  };
+
+  const [replies, setReplies] = useState<Replie[]>([]);
+  const getReplies = (userName: string) => {
+    const forumRef = collection(FIRESTORE_DB, "replies");
+
+    const subscriber = onSnapshot(
+      query(forumRef, where("userName", "==", userName)),
+      {
+        next: (snapshot) => {
+          const replies: any[] = [];
+          snapshot.docs.forEach((doc) => {
+            replies.push({
+              postId: doc.data().postId,
+              parentId: doc.data().parentId,
+              userName: doc.data().userName,
+              reply: doc.data().reply,
+              children: doc.data().children,
+              createdAt: doc.data().createdAt,
+              updatedAt: doc.data().updatedAt,
+            });
+          });
+          setReplies(replies);
+          console.log(replies)
         },
       }
     );
@@ -53,18 +80,26 @@ const PrivateUser = () => {
     <View style={styles.container}>
       <Text style={styles.headline}>Aktivitet</Text>
       <ScrollView contentContainerStyle={styles.scrollView}>
-        {threads.length > 0 ?
-        threads.map((thread, index) => (
-            <ThreadDisplay
-            key={index}
-            subject={thread.headline}
-            author={thread.userName}
-            date={thread.date}
-            replies={thread.replies.length}
-            id={thread.id}
-            />
+        {threads.length > 0
+          ? threads.map((thread, index) => (
+              <ThreadDisplay
+                key={index}
+                subject={thread.headline}
+                author={thread.userName}
+                date={thread.date}
+                replies={thread.replies.length}
+                id={thread.id}
+              />
             ))
-        : null}
+          : null}
+        {replies.length > 0
+          ? replies.map((reply, index) => (
+              <View style={styles.borderline}>
+                <Text>{reply.reply}</Text>
+                <ReplyDisplay key={index} reply={reply} />
+              </View>
+            ))
+          : null}
       </ScrollView>
     </View>
   );
@@ -79,6 +114,11 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     paddingTop: 50,
+  },
+  borderline: {
+    width: "90%",
+    borderLeftWidth: 2,
+    borderLeftColor: "black",
   },
   headline: {
     fontSize: 30,

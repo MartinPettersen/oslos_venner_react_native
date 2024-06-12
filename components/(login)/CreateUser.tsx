@@ -28,7 +28,6 @@ const CreateUser = () => {
 
 
   const handleSignUp = async () => {
-    console.log("trying to log inne");
     setLoading(true);
     try {
       const response = await createUserWithEmailAndPassword(
@@ -36,7 +35,6 @@ const CreateUser = () => {
         email,
         password
       );
-      console.log(response);
       await updateProfile(auth.currentUser, {
         displayName: userName,
       });

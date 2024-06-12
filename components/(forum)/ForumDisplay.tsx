@@ -14,7 +14,6 @@ const { width, height } = Dimensions.get("window");
 
 const ForumDisplay = ({ forum, threads }: Props) => {
   const navigation = useNavigation();
-  console.log(forum)
   return (
     <View style={styles.container}>
       { forum ?  

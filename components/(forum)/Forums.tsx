@@ -26,7 +26,6 @@ const Forums = ({ navigation }: any) => {
       next: (snapshot) => {
         const forums: Forum[] = [];
         snapshot.docs.forEach(doc => {
-          console.log(doc.data())
           forums.push({
             label: doc.data().label,
             threads: doc.data().threads,
@@ -35,7 +34,6 @@ const Forums = ({ navigation }: any) => {
           })
         })
         setForums(forums)
-        console.log(forums)
       }
     })
     

@@ -69,7 +69,6 @@ const Thread = () => {
       next: (snapshot) => {
         const threads: any[] = [];
         snapshot.docs.forEach((doc) => {
-          console.log(doc.data());
           threads.push({
             id: doc.data().id,
             headline: doc.data().headline,
@@ -83,7 +82,6 @@ const Thread = () => {
           });
         });
         setThread(threads[0]);
-        // console.log(threads);
       },
     });
 
@@ -101,7 +99,6 @@ const Thread = () => {
         next: (snapshot) => {
           const replies: any[] = [];
           snapshot.docs.forEach((doc) => {
-            console.log(doc.data());
             replies.push({
               postId: doc.data().postId,
               parentId: doc.data().parentId,
@@ -113,7 +110,6 @@ const Thread = () => {
             });
           });
           setReplies(replies);
-          //console.log(replies[0]);
         },
       }
     );
@@ -132,12 +128,10 @@ const Thread = () => {
   const handleAddReply = async () => {
     const threadId = uuidv4();
 
-    console.log("trying to Add Reply");
 
     const today = new Date();
     setCreatedAt(today.toString());
     setUpdatedAt(today.toString());
-    console.log(today);
     const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
       postId: uuidv4(),
       reply: reply,
@@ -158,7 +152,6 @@ const Thread = () => {
 
   useEffect(() => {
     onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      console.log('user', user)
       setUser(user)
     })
   },[])
