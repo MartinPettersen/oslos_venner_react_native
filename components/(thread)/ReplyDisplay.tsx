@@ -14,6 +14,7 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import RepliesContainer from "./RepliesContainer";
+import ReplyModalMenu from "./(replyModalMenu)/ReplyModelMenu";
 
 type Props = {
   reply: Replie;
@@ -22,12 +23,21 @@ type Props = {
 const { width, height } = Dimensions.get("window");
 
 const ReplyDisplay = ({ reply }: Props) => {
-
-  console.log(reply)
+  console.log(reply);
 
   const navigation = useNavigation();
 
   const [newReply, setNewReply] = useState<string>("");
+
+  const [replyMenuModalVisible, setReplyMenuModalVisible] = useState(false);
+
+  const openReplyMenuModal = () => {
+    setReplyMenuModalVisible(true);
+  };
+
+  const closeReplyMenuModal = () => {
+    setReplyMenuModalVisible(false);
+  };
 
   const [replyModalVisible, setReplyModalVisible] = useState(false);
   const openReplyModal = () => {
@@ -40,7 +50,6 @@ const ReplyDisplay = ({ reply }: Props) => {
 
   const handleAddReply = async () => {
     const threadId = uuidv4();
-
 
     const today = new Date();
     const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
@@ -66,9 +75,24 @@ const ReplyDisplay = ({ reply }: Props) => {
   }, []);
 
   return (
-    <View style={{ width: width, flex:1,  alignItems: "center", justifyContent: "flex-start" , marginBottom: 0 }}>
+    <View
+      style={{
+        width: width,
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "flex-start",
+        marginBottom: 0,
+      }}
+    >
       <View style={styles.display}>
-        <Text style={styles.displayText}>{reply.userName}</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.displayText}>{reply.userName}</Text>
+          <TouchableOpacity onPress={() => openReplyMenuModal()}>
+            <Text style={styles.dots}>{"\u2022\u2022\u2022"}</Text>
+          </TouchableOpacity>
+          <ReplyModalMenu user={user} reply={reply} replyMenuModalVisible={replyMenuModalVisible} setReplyMenuModalVisible={setReplyMenuModalVisible}/>
+
+        </View>
         <Text style={styles.displayText}>{reply.reply}</Text>
         <View style={styles.footer}>
           <TouchableOpacity
@@ -135,8 +159,7 @@ const styles = StyleSheet.create({
     width: "90%",
     height: "20%",
     flexDirection: "column",
-    flex: 1
-    
+    flex: 1,
   },
   displayText: {
     fontSize: 12,
@@ -200,6 +223,11 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     textDecorationLine: "underline",
     width: "40%",
+  },
+  dots: {
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
   },
 });
 
