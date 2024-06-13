@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Modal, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
 import ReportModal from "./ReportModal";
 import DeleteModal from "./DeleteModa";
+import EditModal from "./EditModal";
 
 const { width, height } = Dimensions.get("window");
 
@@ -18,6 +19,7 @@ const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props)
 
   const [reportModalVisible, setReportModalVisible] = useState(false)
   const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false)
+  const [editModalVisible,setEditModalVisible] = useState(false)
 
   const openMenuModal = () => {
     setMenuModalVisible(true);
@@ -31,6 +33,9 @@ const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props)
     setMenuModalVisible(false);
   };
 
+  const closeEditModal = () => {
+    setMenuModalVisible(false);
+  };
   return (
     <>
     <Modal
@@ -50,7 +55,7 @@ const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props)
               <>
                 <TouchableOpacity
                   style={styles.button}
-                  onPress={closeMenuModal}
+                  onPress={() => {setEditModalVisible(true); closeEditModal()}}
                 >
                   <Text style={styles.buttonText}>Edit</Text>
                 </TouchableOpacity>
@@ -69,6 +74,7 @@ const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props)
         </View>
       </View>
     </Modal>
+        <EditModal editModalVisible={editModalVisible} setEditModalVisible={setEditModalVisible} id={thread.id} displayName={user?.displayName} content={thread.content} headline={thread.headline} />
       <ReportModal reportModalVisible={reportModalVisible} setReportModalVisible={setReportModalVisible} id={thread.id} displayName={user?.displayName}/>
       <DeleteModal  deleteModalVisible={deleteModalVisible} setDeleteModalVisible={setDeleteModalVisible} id={thread.id} displayName={user?.displayName} />
     </>
