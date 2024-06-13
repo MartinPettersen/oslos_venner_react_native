@@ -29,12 +29,12 @@ const DeleteReplyModal = ({
 
   const handleDelete = async () => {
     
-    const q = query(collection(FIRESTORE_DB, 'posts'), where('postId', '==', id));
+    const q = query(collection(FIRESTORE_DB, 'replies'), where('postId', '==', id));
 
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach(async (document) => {
-      await deleteDoc(doc(FIRESTORE_DB, 'posts', document.id));
+      await deleteDoc(doc(FIRESTORE_DB, 'replies', document.id));
     });
 
     closeDeleteModal();
