@@ -21,7 +21,8 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
 import { User, onAuthStateChanged } from "firebase/auth";
-import ModalMenu from "./ModalMenu";
+import ModalMenu from "./(modalmenu)/ModalMenu";
+import ReplyModal from "./ReplyModal";
 
 const { width, height } = Dimensions.get("window");
 
@@ -97,7 +98,7 @@ const Thread = () => {
     });
   }, []);
 
-  const [replies, setReplies] = useState([]);
+  const [replies, setReplies] = useState<Replie[]>([]);
 
   useEffect(() => {
     const forumRef = collection(FIRESTORE_DB, "replies");
@@ -176,6 +177,8 @@ const Thread = () => {
           <TouchableOpacity onPress={() => openMenuModal()}>
             <Text style={styles.dots}>{"\u2022\u2022\u2022"}</Text>
           </TouchableOpacity>
+          <ModalMenu user={user} thread={thread} menuModalVisible={menuModalVisible} setMenuModalVisible={setMenuModalVisible}/>
+
         </View>
 
         <Text style={styles.threadText}>{thread.userName}</Text>
@@ -204,43 +207,7 @@ const Thread = () => {
           <ReplyDisplay key={index} reply={reply} />
         ))}
       </ScrollView>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={replyModalVisible}
-        onRequestClose={closeReplyModal}
-        style={{ height: "30%" }}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContentContainer}>
-            <Text style={styles.headline}>Skriv en kommentar</Text>
-
-            <View style={styles.inputContainer}>
-              <Text style={styles.text}>Svar: </Text>
-              <TextInput
-                placeholder="Svar"
-                onChangeText={(text: string) => setReply(text)}
-                value={reply}
-                style={styles.inputField}
-              />
-            </View>
-
-            <TouchableOpacity
-              onPress={() => handleAddReply()}
-              disabled={reply === ""}
-              style={styles.button}
-            >
-              <Text style={styles.buttonText}>Svar</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={closeReplyModal}>
-              <Text style={styles.text}>Close</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      <ModalMenu user={user} thread={thread} menuModalVisible={menuModalVisible} setMenuModalVisible={setMenuModalVisible}/>
+      <ReplyModal id={id} displayName={user?.displayName} replyModalVisible={replyModalVisible} setReplyModalVisible={setReplyModalVisible} />
     </View>
   );
 };
