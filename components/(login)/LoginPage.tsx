@@ -3,17 +3,14 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   Dimensions,
   TouchableOpacity,
   TextInput,
-  Button,
   ActivityIndicator,
   KeyboardAvoidingView,
 } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import {
-  createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";

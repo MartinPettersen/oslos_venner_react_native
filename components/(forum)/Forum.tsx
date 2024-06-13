@@ -50,7 +50,7 @@ const Forum = () => {
     const forumRef = collection(FIRESTORE_DB, "threads");
 
     const subscriber = onSnapshot(
-      query(forumRef, where("forumLabel", "==", forum)), 
+      query(forumRef, where("forumLabel", "==", forum)),
       {
         next: (snapshot) => {
           const threads: any[] = [];
@@ -83,18 +83,21 @@ const Forum = () => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      setUser(user)
-    })
-  },[])
-
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, []);
 
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>{forum}</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => user? navigation.navigate("CreateThreadPage", { forum }): navigation.navigate("Login")}
+        onPress={() =>
+          user
+            ? navigation.navigate("CreateThreadPage", { forum })
+            : navigation.navigate("Login")
+        }
       >
         <Text style={styles.buttonText}>Nytt Innlegg</Text>
       </TouchableOpacity>

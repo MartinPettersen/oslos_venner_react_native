@@ -49,7 +49,7 @@ const PrivateUser = () => {
     );
   };
 
-  const [replies, setReplies] = useState([]);
+  const [replies, setReplies] = useState<Replie[]>([]);
   const getReplies = (userName: string) => {
     const forumRef = collection(FIRESTORE_DB, "replies");
 

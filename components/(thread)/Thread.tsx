@@ -21,6 +21,7 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
 import { User, onAuthStateChanged } from "firebase/auth";
+import ModalMenu from "./ModalMenu";
 
 const { width, height } = Dimensions.get("window");
 
@@ -57,6 +58,16 @@ const Thread = () => {
     setReplyModalVisible(false);
   };
 
+  const [menuModalVisible, setMenuModalVisible] = useState(false);
+
+  const openMenuModal = () => {
+    setMenuModalVisible(true);
+  };
+
+  const closeMenuModal = () => {
+    setMenuModalVisible(false);
+  };
+
   const navigation = useNavigation();
 
   const route = useRoute();
@@ -84,9 +95,7 @@ const Thread = () => {
         setThread(threads[0]);
       },
     });
-
   }, []);
-
 
   const [replies, setReplies] = useState([]);
 
@@ -94,7 +103,7 @@ const Thread = () => {
     const forumRef = collection(FIRESTORE_DB, "replies");
 
     const subscriber = onSnapshot(
-      query(forumRef, where("parentId", "==", id)), 
+      query(forumRef, where("parentId", "==", id)),
       {
         next: (snapshot) => {
           const replies: any[] = [];
@@ -115,7 +124,6 @@ const Thread = () => {
     );
   }, []);
 
-
   const [user, setUser] = useState<User | null>(null);
   const [postId, setPostId] = useState<string>("");
   const [reply, setReply] = useState<string>("");
@@ -127,7 +135,6 @@ const Thread = () => {
 
   const handleAddReply = async () => {
     const threadId = uuidv4();
-
 
     const today = new Date();
     setCreatedAt(today.toString());
@@ -147,14 +154,11 @@ const Thread = () => {
     closeReplyModal();
   };
 
-
-
-
   useEffect(() => {
-    onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      setUser(user)
-    })
-  },[])
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, []);
 
   if (!thread) {
     return (
@@ -167,11 +171,21 @@ const Thread = () => {
   return (
     <View style={styles.container}>
       <View style={styles.thread}>
-        <Text style={styles.threadText}>{thread.headline}</Text>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text style={styles.threadText}>{thread.headline}</Text>
+          <TouchableOpacity onPress={() => openMenuModal()}>
+            <Text style={styles.dots}>{"\u2022\u2022\u2022"}</Text>
+          </TouchableOpacity>
+        </View>
+
         <Text style={styles.threadText}>{thread.userName}</Text>
         <Text style={styles.threadText}>{thread.content}</Text>
         <View style={styles.footer}>
-          <TouchableOpacity onPress={() => user ? openReplyModal() : navigation.navigate("Login")}>
+          <TouchableOpacity
+            onPress={() =>
+              user ? openReplyModal() : navigation.navigate("Login")
+            }
+          >
             <Text style={styles.threadText}>Svar</Text>
           </TouchableOpacity>
           <Text style={styles.threadText}>#{replies.length}</Text>
@@ -187,10 +201,7 @@ const Thread = () => {
       </View>
       <ScrollView contentContainerStyle={styles.scrollView}>
         {replies.map((reply, index) => (
-          <ReplyDisplay
-            key={index}
-            reply={reply}
-          />
+          <ReplyDisplay key={index} reply={reply} />
         ))}
       </ScrollView>
       <Modal
@@ -228,6 +239,48 @@ const Thread = () => {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={menuModalVisible}
+        onRequestClose={closeMenuModal}
+        style={{ height: "30%" }}
+      >
+        <View style={styles.menuModalContainer}>
+          <View style={styles.menuModalContentContainer}>
+            <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
+              <Text style={styles.buttonText}>Report</Text>
+            </TouchableOpacity>
+            {user ? (
+                
+                user?.displayName == thread.userName ? (
+                  <>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={closeMenuModal}
+                    >
+                      <Text style={styles.buttonText}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.button}
+                      onPress={closeMenuModal}
+                    >
+                      <Text style={styles.buttonText}>Delete</Text>
+                    </TouchableOpacity>
+                  </>
+                ) : (
+                  null
+                )
+            ) : (
+              null
+            )}
+            <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
+              <Text style={styles.buttonText}>Lukk</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+      <ModalMenu user={user} thread={thread} menuModalVisible={menuModalVisible} setMenuModalVisible={setMenuModalVisible}/>
     </View>
   );
 };
@@ -248,6 +301,14 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     paddingTop: 50,
+
+  },
+  menuModalContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: width,
+    paddingTop: 200,
   },
   modalContentContainer: {
     backgroundColor: "#FCD3E9",
@@ -255,6 +316,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "80%",
     height: "60%",
+    paddingTop: 50,
+    borderWidth: 2,
+  },
+  menuModalContentContainer: {
+    backgroundColor: "#FCD3E9",
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: "80%",
     paddingTop: 50,
     borderWidth: 2,
   },
@@ -294,7 +363,6 @@ const styles = StyleSheet.create({
     color: "white",
   },
   scrollView: {
-    
     width: width,
     alignItems: "center",
     paddingVertical: -0,
@@ -327,6 +395,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: 200,
     paddingBottom: 5,
+  },
+  dots: {
+    fontWeight: "bold",
+    fontSize: 30,
+    color: "white",
   },
 });
 
