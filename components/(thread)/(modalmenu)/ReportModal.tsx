@@ -1,83 +1,95 @@
-import { User } from "firebase/auth";
+import { addDoc, collection } from "firebase/firestore";
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
-import ReportModal from "./ReportModal";
+import {
+  Modal,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { FIRESTORE_DB } from "../../../firebaseConfig";
+import { v4 as uuidv4 } from "uuid";
+
+type Props = {
+  reportModalVisible: boolean
+  setReportModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
+  displayName: string | null | undefined,
+  id: string,
+};
 
 const { width, height } = Dimensions.get("window");
 
-type Props = {
-    user: User| null,
-    thread: Thread,
-    menuModalVisible: boolean,
-    setMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-}
 
+const ReportModal = ({reportModalVisible, setReportModalVisible, id, displayName}: Props) => {
 
-const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props) => {
+    const [report, setReport] = useState<string>("");
 
-  const [reportModalVisible, setReportModalVisible] = useState(false)
+    const handleAddReport = async () => {
+        const threadId = uuidv4();
+    
+        const today = new Date();
+        const doc = await addDoc(collection(FIRESTORE_DB, "reports"), {
+          reportId: uuidv4(),
+          report: report,
+          userName: displayName,
+          subjectId: id,
+          createdAt: today.toString(),
+          updatedAt: today.toString(),
+        });
+        setReport("");
+        closeReportModal();
+      };
 
-  const openMenuModal = () => {
-    setMenuModalVisible(true);
-  };
-
-  const closeMenuModal = () => {
-    setMenuModalVisible(false);
-  };
+    const openReportModal = () => {
+        setReportModalVisible(true);
+      };
+    
+      const closeReportModal = () => {
+        setReportModalVisible(false);
+      };
 
   return (
-    <>
     <Modal
       animationType="none"
       transparent={true}
-      visible={menuModalVisible}
-      onRequestClose={closeMenuModal}
+      visible={reportModalVisible}
+      onRequestClose={closeReportModal}
       style={{ height: "30%" }}
     >
-      <View style={styles.menuModalContainer}>
-        <View style={styles.menuModalContentContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => {setReportModalVisible(true); closeMenuModal()}}>
-            <Text style={styles.buttonText}>Report</Text>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContentContainer}>
+          <Text style={styles.headline}>Skriv grunnen for rapporten</Text>
+
+          <View style={styles.inputContainer}>
+            <Text style={styles.text}>Grunn: </Text>
+            <TextInput
+              placeholder="Grunn"
+              onChangeText={(text: string) => setReport(text)}
+              value={report}
+              style={styles.inputField}
+            />
+          </View>
+
+          <TouchableOpacity
+            onPress={() => handleAddReport()}
+            disabled={report === ""}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Rapporter</Text>
           </TouchableOpacity>
-          {user ? (
-            user?.displayName == thread.userName ? (
-              <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={closeMenuModal}
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={closeMenuModal}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              </>
-            ) : null
-          ) : null}
-          <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
-            <Text style={styles.buttonText}>Lukk</Text>
+
+          <TouchableOpacity onPress={closeReportModal}>
+            <Text style={styles.text}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
-      <ReportModal reportModalVisible={reportModalVisible} setReportModalVisible={setReportModalVisible} id={thread.id} displayName={user?.displayName}/>
-    </>
-
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FCD3E9",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: width,
-    paddingTop: 50,
-  },
   modalContainer: {
     flex: 1,
     alignItems: "center",
@@ -186,4 +198,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalMenu;
+export default ReportModal;
