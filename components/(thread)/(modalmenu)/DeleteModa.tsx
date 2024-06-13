@@ -1,90 +1,82 @@
-import { User } from "firebase/auth";
+import { addDoc, collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
-import ReportModal from "./ReportModal";
-import DeleteModal from "./DeleteModa";
+import {
+  Modal,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { FIRESTORE_DB } from "../../../firebaseConfig";
+
+type Props = {
+  deleteModalVisible: boolean;
+  setDeleteModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  displayName: string | null | undefined;
+  id: string;
+};
 
 const { width, height } = Dimensions.get("window");
 
-type Props = {
-    user: User| null,
-    thread: Thread,
-    menuModalVisible: boolean,
-    setMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-}
+const DeleteModal = ({
+  deleteModalVisible,
+  setDeleteModalVisible,
+  id,
+  displayName,
+}: Props) => {
+  const [report, setReport] = useState<string>("");
 
+  const handleDelete = async () => {
+    
+    const q = query(collection(FIRESTORE_DB, 'threads'), where('id', '==', id));
 
-const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props) => {
+    const querySnapshot = await getDocs(q);
 
-  const [reportModalVisible, setReportModalVisible] = useState(false)
-  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false)
+    querySnapshot.forEach(async (document) => {
+      await deleteDoc(doc(FIRESTORE_DB, 'threads', document.id));
+    });
 
-  const openMenuModal = () => {
-    setMenuModalVisible(true);
+    closeDeleteModal();
   };
 
-  const closeMenuModal = () => {
-    setMenuModalVisible(false);
+  const openDeleteModal = () => {
+    setDeleteModalVisible(true);
   };
 
   const closeDeleteModal = () => {
-    setMenuModalVisible(false);
+    setDeleteModalVisible(false);
   };
 
   return (
-    <>
     <Modal
       animationType="none"
       transparent={true}
-      visible={menuModalVisible}
-      onRequestClose={closeMenuModal}
+      visible={deleteModalVisible}
+      onRequestClose={closeDeleteModal}
       style={{ height: "30%" }}
     >
-      <View style={styles.menuModalContainer}>
-        <View style={styles.menuModalContentContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => {setReportModalVisible(true); closeMenuModal()}}>
-            <Text style={styles.buttonText}>Report</Text>
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContentContainer}>
+          <Text style={styles.headline}>Sikker på at du ønsker å slette?</Text>
+
+          <TouchableOpacity
+            onPress={() => handleDelete()}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Ja</Text>
           </TouchableOpacity>
-          {user ? (
-            user?.displayName == thread.userName ? (
-              <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={closeMenuModal}
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {setDeleteModalVisible(true); closeDeleteModal()}}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              </>
-            ) : null
-          ) : null}
-          <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
-            <Text style={styles.buttonText}>Lukk</Text>
+
+          <TouchableOpacity onPress={closeDeleteModal}>
+            <Text style={styles.text}>Nei</Text>
           </TouchableOpacity>
         </View>
       </View>
     </Modal>
-      <ReportModal reportModalVisible={reportModalVisible} setReportModalVisible={setReportModalVisible} id={thread.id} displayName={user?.displayName}/>
-      <DeleteModal  deleteModalVisible={deleteModalVisible} setDeleteModalVisible={setDeleteModalVisible} id={thread.id} displayName={user?.displayName} />
-    </>
-
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#FCD3E9",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    width: width,
-    paddingTop: 50,
-  },
   modalContainer: {
     flex: 1,
     alignItems: "center",
@@ -193,4 +185,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ModalMenu;
+export default DeleteModal;
