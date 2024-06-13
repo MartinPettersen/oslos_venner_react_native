@@ -47,7 +47,7 @@ const REPLIES = [
 ];
 
 const Thread = () => {
-  const [thread, setThread] = useState(null);
+  const [thread, setThread] = useState<Thread | null>(null);
 
   const [replyModalVisible, setReplyModalVisible] = useState(false);
   const openReplyModal = () => {
@@ -78,7 +78,7 @@ const Thread = () => {
 
     const subscriber = onSnapshot(query(forumRef, where("id", "==", id)), {
       next: (snapshot) => {
-        const threads: any[] = [];
+        const threads: Thread[] = [];
         snapshot.docs.forEach((doc) => {
           threads.push({
             id: doc.data().id,
@@ -239,47 +239,7 @@ const Thread = () => {
           </View>
         </View>
       </Modal>
-      <Modal
-        animationType="none"
-        transparent={true}
-        visible={menuModalVisible}
-        onRequestClose={closeMenuModal}
-        style={{ height: "30%" }}
-      >
-        <View style={styles.menuModalContainer}>
-          <View style={styles.menuModalContentContainer}>
-            <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
-              <Text style={styles.buttonText}>Report</Text>
-            </TouchableOpacity>
-            {user ? (
-                
-                user?.displayName == thread.userName ? (
-                  <>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={closeMenuModal}
-                    >
-                      <Text style={styles.buttonText}>Edit</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={closeMenuModal}
-                    >
-                      <Text style={styles.buttonText}>Delete</Text>
-                    </TouchableOpacity>
-                  </>
-                ) : (
-                  null
-                )
-            ) : (
-              null
-            )}
-            <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
-              <Text style={styles.buttonText}>Lukk</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+
       <ModalMenu user={user} thread={thread} menuModalVisible={menuModalVisible} setMenuModalVisible={setMenuModalVisible}/>
     </View>
   );

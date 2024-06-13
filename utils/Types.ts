@@ -7,3 +7,15 @@ type Replie = {
     updatedAt: string,
     children: string[]
 }
+
+type Thread = {
+    id: string,
+    headline: string,
+    userName: string,
+    content: string,
+    forumLabel: string,
+    replies: string[],
+    createdBy: string,
+    createdAt: string,
+    updatedAt: string,
+}

@@ -6,7 +6,7 @@ const { width, height } = Dimensions.get("window");
 
 type Props = {
     user: User| null,
-    thread: any,
+    thread: Thread,
     menuModalVisible: boolean,
     setMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
 }
