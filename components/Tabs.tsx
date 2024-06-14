@@ -8,12 +8,14 @@ import { Feather } from "@expo/vector-icons";
 import Login from "../screens/Login";
 import CreateForum from "../screens/CreateForum";
 import CreateThreadPage from "../screens/CreateThreadPage";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { User, getIdTokenResult, onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "../firebaseConfig";
 import { Button } from "react-native";
 import SignOut from "./(login)/SignOut";
 import CreateUserPage from "../screens/CreateUserPage";
 import PrivateUserPage from "../screens/PrivateUserPage";
+import AdminPage from "../screens/AdminPage";
+import AdminReportPage from "../screens/AdminReportPage";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -37,6 +39,11 @@ const HomeStack = () => {
         options={{ headerShown: false }}
       />
       <Stack.Screen
+        name="AdminReportPage"
+        component={AdminReportPage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
         name="ThreadPage"
         component={ThreadPage}
         options={{ headerShown: false }}
@@ -53,10 +60,20 @@ const HomeStack = () => {
 const Tabs = () => {
   const [user, setUser] = useState<User | null>();
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, async (user) => {
       setUser(user);
+
+      if (user) {
+        const idTokenResult = await getIdTokenResult(user);
+        setIsAdmin(!!idTokenResult.claims.admin);
+      } else {
+        setIsAdmin(false);
+      }
     });
+
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -137,21 +154,39 @@ const Tabs = () => {
             ),
           }}
         />
-      ) : null}
+      ) : 
       <Tab.Screen
-        name="Create Forum"
-        component={CreateForum}
+          name="Min Side"
+          component={Login}
+          options={{
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <Feather
+                name="lock"
+                size={25}
+                color={focused ? "#FCD3E9" : "white"}
+              />
+            ),
+          }}
+        />}
+      {isAdmin ? 
+    
+
+      <Tab.Screen
+        name="Admin"
+        component={AdminPage}
         options={{
           headerShown: false,
           tabBarIcon: ({ focused }) => (
             <Feather
-              name="droplet"
+              name="eye"
               size={25}
-              color={focused ? "#FCD3E9" : "white"}
+              color={focused ? "orange" : "red"}
             />
           ),
         }}
-      />
+        />
+        : null }
     </Tab.Navigator>
   );
 };

@@ -4,7 +4,7 @@ import ForumDisplay from "../(forum)/ForumDisplay";
 import ThreadDisplay from "../(forum)/ThreadDisplay";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
-import { User, onAuthStateChanged } from "firebase/auth";
+import { User, getIdTokenResult, onAuthStateChanged } from "firebase/auth";
 import ReplyDisplay from "../(thread)/ReplyDisplay";
 
 const { width, height } = Dimensions.get("window");
@@ -12,13 +12,22 @@ const { width, height } = Dimensions.get("window");
 const PrivateUser = () => {
   const [user, setUser] = useState<User | null>(null);
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   useEffect(() => {
-    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+    const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, async (user) => {
       setUser(user);
       getThreads(user?.displayName);
       getReplies(user?.displayName);
 
+      if (user) {
+        const idTokenResult = await getIdTokenResult(user);
+        setIsAdmin(!!idTokenResult.claims.admin);
+      } else {
+        setIsAdmin(false);
+      }
     });
+
+    return () => unsubscribe();
   }, []);
 
   const [threads, setThreads] = useState([]);
@@ -78,7 +87,12 @@ const PrivateUser = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>Aktivitet</Text>
+      <Text style={styles.headline}>{user?.displayName}</Text>
+      <Text style={styles.headline}>Aktivitet:</Text>
+      <View style={styles.headline}>{isAdmin ?  <Text style={styles.headline}>This user is an admin</Text>: <Text style={styles.headline}>This user is a customer</Text>
+}</View>
+
+
       <ScrollView contentContainerStyle={styles.scrollView}>
         {threads.length > 0
           ? threads.map((thread, index) => (

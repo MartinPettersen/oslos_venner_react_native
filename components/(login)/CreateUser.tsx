@@ -15,6 +15,8 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
+import axios from 'axios';
+
 
 const { width, height } = Dimensions.get("window");
 
@@ -38,6 +40,12 @@ const CreateUser = () => {
       await updateProfile(auth.currentUser, {
         displayName: userName,
       });
+
+      if (email === 'admin2@gmail.com') {
+        console.log('admin comming true')
+        await axios.post('http://localhost:3000/setAdminRole', { email });
+      }
+
     } catch (error) {
       console.log(error);
     } finally {
