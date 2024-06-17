@@ -67,8 +67,8 @@ const DeleteReplyModal = ({
             <Text style={styles.buttonText}>Ja</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={closeDeleteModal}>
-            <Text style={styles.text}>Nei</Text>
+          <TouchableOpacity style={styles.button} onPress={closeDeleteModal}>
+            <Text style={styles.buttonText}>Nei</Text>
           </TouchableOpacity>
         </View>
       </View>

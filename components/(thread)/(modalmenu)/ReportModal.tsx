@@ -60,6 +60,9 @@ const ReportModal = ({reportModalVisible, setReportModalVisible, id, displayName
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContentContainer}>
+        <TouchableOpacity style={styles.close} onPress={closeReportModal}>
+            <Text style={styles.buttonText}>X</Text>
+          </TouchableOpacity>
           <Text style={styles.headline}>Skriv grunnen for rapporten</Text>
 
           <View style={styles.inputContainer}>
@@ -80,9 +83,6 @@ const ReportModal = ({reportModalVisible, setReportModalVisible, id, displayName
             <Text style={styles.buttonText}>Rapporter</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={closeReportModal}>
-            <Text style={styles.text}>Close</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </Modal>
@@ -195,6 +195,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 

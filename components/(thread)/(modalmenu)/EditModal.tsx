@@ -82,6 +82,9 @@ const EditModal = ({
     >
       <View style={styles.modalContainer}>
         <View style={styles.modalContentContainer}>
+        <TouchableOpacity style={styles.close} onPress={closeEditModal}>
+            <Text style={styles.buttonText}>X</Text>
+          </TouchableOpacity>
           <Text style={styles.headline}>Oppdater innholdet</Text>
 
           <View style={styles.inputContainer}>
@@ -108,10 +111,6 @@ const EditModal = ({
             style={styles.button}
           >
             <Text style={styles.buttonText}>Oppdater</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={closeEditModal}>
-            <Text style={styles.text}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -225,6 +224,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 
