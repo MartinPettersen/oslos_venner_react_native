@@ -34,6 +34,8 @@ const Reports = () => {
             report: doc.data().report,
             userName: doc.data().userName,
             subjectId: doc.data().subjectId,
+            reportId: doc.data().reportId,
+
           })
         })
         setReports(reports)

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions, ActivityIndicator, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import ForumDisplay from "../(forum)/ForumDisplay";
 import ThreadDisplay from "../(forum)/ThreadDisplay";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
@@ -34,7 +42,6 @@ const Admin = () => {
     return () => unsubscribe();
   }, [navigation]);
 
-
   useEffect(() => {
     if (!isAdmin && !loading) {
       navigation.navigate("Forum");
@@ -49,18 +56,21 @@ const Admin = () => {
     );
   }
 
-  
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.headline}>Admin Side</Text>
       <TouchableOpacity
-              style={styles.button}
-              onPress={() => navigation.navigate("AdminReportPage")}
-            >
-              <Text style={styles.buttonText}>Rapporter</Text>
-            </TouchableOpacity>
+        style={styles.button}
+        onPress={() => navigation.navigate("AdminReportPage")}
+      >
+        <Text style={styles.buttonText}>Rapporter</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate("CreateForum")}
+      >
+        <Text style={styles.buttonText}>Opprett Forum</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -74,7 +84,7 @@ const styles = StyleSheet.create({
     width: width,
     height: height,
     paddingTop: 50,
-  }, 
+  },
   buttonText: {
     fontSize: 20,
     marginVertical: 0,
@@ -121,7 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20,
-  }, loadingContainer: {
+  },
+  loadingContainer: {
     justifyContent: "center",
   },
 });

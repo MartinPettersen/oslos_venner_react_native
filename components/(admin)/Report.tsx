@@ -74,7 +74,7 @@ const Report = ({ report }: Props) => {
       <Text style={styles.displayText}>Grunn for rapport: {report.report}</Text>
       { replies.length > 0 ? 
       
-      <ReportPost reply={replies[0]} />
+      <ReportPost reply={replies[0]} reportId={report.reportId} />
     : null}
     { threads.length > 0 ? 
       
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
         width: "80%",
         justifyContent: "center",
         alignItems: "center",
-        height: 200,
         marginBottom: 20,
       },
       text: {

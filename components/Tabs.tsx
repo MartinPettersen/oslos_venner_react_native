@@ -43,6 +43,12 @@ const HomeStack = () => {
         component={AdminReportPage}
         options={{ headerShown: false }}
       />
+      
+      <Stack.Screen
+        name="CreateForum"
+        component={CreateForum}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="ThreadPage"
         component={ThreadPage}

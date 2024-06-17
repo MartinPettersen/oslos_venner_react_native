@@ -7,10 +7,10 @@ import { FIRESTORE_DB } from "../../firebaseConfig";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
-    parentId: string
-}
+  parentId: string;
+};
 
-function RepliesContainer({parentId}: Props) {
+function RepliesContainer({ parentId }: Props) {
   const [replies, setReplies] = useState<Replie[]>([]);
 
   useEffect(() => {
@@ -39,14 +39,13 @@ function RepliesContainer({parentId}: Props) {
   }, []);
 
   return (
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {replies.map((reply, index) => (
-            <View style={styles.borderline}>
-            
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      {replies.map((reply, index) => (
+        <View style={styles.borderline}>
           <ReplyDisplay key={index} reply={reply} />
-            </View>
-        ))}
-      </ScrollView>
+        </View>
+      ))}
+    </ScrollView>
   );
 }
 
@@ -61,7 +60,7 @@ const styles = StyleSheet.create({
   borderline: {
     width: "90%",
     borderLeftWidth: 2,
-    borderLeftColor: 'black', 
+    borderLeftColor: "black",
   },
 });
 

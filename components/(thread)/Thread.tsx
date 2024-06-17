@@ -171,6 +171,8 @@ const Thread = () => {
 
   return (
     <View style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+
       <View style={styles.thread}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <Text style={styles.threadText}>{thread.headline}</Text>
@@ -202,7 +204,6 @@ const Thread = () => {
           >{`${thread.createdAt.slice(8, 10)}.${thread.createdAt.slice(4, 7)}.${thread.createdAt.slice(11, 15)}`}</Text>
         </View>
       </View>
-      <ScrollView contentContainerStyle={styles.scrollView}>
         {replies.map((reply, index) => (
           <ReplyDisplay key={index} reply={reply} />
         ))}

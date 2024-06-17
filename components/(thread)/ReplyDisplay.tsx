@@ -79,7 +79,7 @@ const ReplyDisplay = ({ reply }: Props) => {
   return (
     <View
       style={{
-        width: width,
+        width: "100%",
         flex: 1,
         alignItems: "center",
         justifyContent: "flex-start",
@@ -137,21 +137,20 @@ const ReplyDisplay = ({ reply }: Props) => {
                 </TouchableOpacity>
                 <Text style={styles.headline}>Skriv en kommentar</Text>
 
-
                 <ScrollView
-            contentContainerStyle={styles.scrollContainer}
-            keyboardShouldPersistTaps="handled"
-          >
-                <View style={styles.inputContainer}>
-                  <Text style={styles.text}>Svar: </Text>
-                  <TextInput
-                    placeholder="Svar"
-                    onChangeText={(text: string) => setNewReply(text)}
-                    value={newReply}
-                    multiline={true}
-                    style={styles.inputField}
-                  />
-                </View>
+                  contentContainerStyle={styles.scrollContainer}
+                  keyboardShouldPersistTaps="handled"
+                >
+                  <View style={styles.inputContainer}>
+                    <Text style={styles.text}>Svar: </Text>
+                    <TextInput
+                      placeholder="Svar"
+                      onChangeText={(text: string) => setNewReply(text)}
+                      value={newReply}
+                      multiline={true}
+                      style={styles.inputField}
+                    />
+                  </View>
                 </ScrollView>
                 <TouchableOpacity
                   onPress={() => handleAddReply()}
@@ -160,7 +159,6 @@ const ReplyDisplay = ({ reply }: Props) => {
                 >
                   <Text style={styles.buttonText}>Svar</Text>
                 </TouchableOpacity>
-
               </View>
             </KeyboardAvoidingView>
           </TouchableWithoutFeedback>
