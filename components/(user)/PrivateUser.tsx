@@ -79,7 +79,6 @@ const PrivateUser = () => {
             });
           });
           setReplies(replies);
-          console.log(replies)
         },
       }
     );
@@ -87,9 +86,9 @@ const PrivateUser = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headline}>{user?.displayName}</Text>
-      <Text style={styles.headline}>Aktivitet:</Text>
-      <View style={styles.headline}>{isAdmin ?  <Text style={styles.headline}>This user is an admin</Text>: <Text style={styles.headline}>This user is a customer</Text>
+      <Text style={styles.headline}></Text>
+      <Text style={styles.headline}>{user?.displayName} Aktivitet:</Text>
+      <View style={styles.headline}>{isAdmin ?  <Text style={styles.headline}>Logget in som admin</Text>: null
 }</View>
 
 

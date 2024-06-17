@@ -42,7 +42,6 @@ const CreateUser = () => {
       });
 
       if (email === 'admin2@gmail.com') {
-        console.log('admin comming true')
         await axios.post('http://localhost:3000/setAdminRole', { email });
       }
 

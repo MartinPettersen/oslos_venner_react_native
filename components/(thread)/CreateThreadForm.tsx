@@ -79,12 +79,13 @@ const CreateThreadForm = () => {
             style={styles.inputField}
           />
         </View>
-        <View style={styles.inputContainer}>
+        <View style={styles.inputContainerArea}>
           <Text style={styles.text}>Innhold: </Text>
           <TextInput
             placeholder="Fakta om Katter..."
             onChangeText={(text: string) => setContent(text)}
             value={content}
+            multiline={true}
             style={styles.inputField}
           />
         </View>
@@ -159,11 +160,16 @@ const styles = StyleSheet.create({
     width: 200,
     paddingBottom: 5,
   },
+  inputContainerArea: {
+    flexDirection: "column",
+    width: 200,
+    paddingBottom: 5,
+  },
   inputField: {
     fontSize: 20,
     marginVertical: 10,
     textDecorationLine: "underline",
-    width: "40%",
+    width: "80%",
   },
   formContainer: {
     flexDirection: "column",
