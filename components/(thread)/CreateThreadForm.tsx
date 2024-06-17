@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   TextInput,
   Button,
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { addDoc, collection } from "firebase/firestore";
@@ -40,7 +42,6 @@ const CreateThreadForm = () => {
   const [user, setUser] = useState<User | null>(null);
 
   const handleAddThread = async () => {
-
     const today = new Date();
     setCreatedAt(today.toString());
     setUpdatedAt(today.toString());
@@ -59,45 +60,51 @@ const CreateThreadForm = () => {
     setUpdatedAt("");
   };
 
-
   useEffect(() => {
-    onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      setUser(user)
-    })
-  },[])
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.headline}>Opprett Ny Forum Tråd</Text>
-      <View style={styles.formContainer}>
-        <View style={styles.inputContainer}>
-          <Text style={styles.text}>Tittel: </Text>
-          <TextInput
-            placeholder="Tittel"
-            onChangeText={(text: string) => setHeadline(text)}
-            value={headline}
-            style={styles.inputField}
-          />
-        </View>
-        <View style={styles.inputContainerArea}>
-          <Text style={styles.text}>Innhold: </Text>
-          <TextInput
-            placeholder="Fakta om Katter..."
-            onChangeText={(text: string) => setContent(text)}
-            value={content}
-            multiline={true}
-            style={styles.inputField}
-          />
-        </View>
+    <KeyboardAvoidingView behaviour="padding" style={styles.container}>
+      <View style={styles.container}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          <Text style={styles.headline}>Opprett Ny Forum Tråd</Text>
+          <View style={styles.formContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.text}>Tittel: </Text>
+              <TextInput
+                placeholder="Tittel"
+                onChangeText={(text: string) => setHeadline(text)}
+                value={headline}
+                style={styles.inputField}
+              />
+            </View>
+            <View style={styles.inputContainerArea}>
+              <Text style={styles.text}>Innhold: </Text>
+              <TextInput
+                placeholder="Fakta om Katter..."
+                onChangeText={(text: string) => setContent(text)}
+                value={content}
+                multiline={true}
+                style={styles.inputField}
+              />
+            </View>
+          </View>
+          <TouchableOpacity
+            onPress={() => handleAddThread()}
+            disabled={headline === "" || content === ""}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Opprett Forum Tråd</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
-      <TouchableOpacity
-        onPress={() => handleAddThread()}
-        disabled={headline === "" || content === ""}
-        style={styles.button}
-      >
-        <Text style={styles.buttonText}>Opprett Forum Tråd</Text>
-      </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -163,6 +170,7 @@ const styles = StyleSheet.create({
   inputContainerArea: {
     flexDirection: "column",
     width: 200,
+    height: 100,
     paddingBottom: 5,
   },
   inputField: {
@@ -175,6 +183,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 20,
   },
 });
 
