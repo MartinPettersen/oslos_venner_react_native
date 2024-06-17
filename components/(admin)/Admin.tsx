@@ -34,7 +34,6 @@ const Admin = () => {
     return () => unsubscribe();
   }, [navigation]);
 
-  // If loading, display a loading indicator
 
   useEffect(() => {
     if (!isAdmin && !loading) {
@@ -50,7 +49,6 @@ const Admin = () => {
     );
   }
 
-  // If user is not an admin, redirect to Forum page
   
 
 

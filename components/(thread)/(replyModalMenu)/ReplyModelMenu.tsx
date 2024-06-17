@@ -1,6 +1,13 @@
 import { User } from "firebase/auth";
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  Modal,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import DeleteReplyModal from "./DeleteReplyModal";
 import EditReplyModal from "./EditReplyModal";
 import ReportReplyModal from "./ReportReplyModal";
@@ -8,18 +15,22 @@ import ReportReplyModal from "./ReportReplyModal";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
-    user: User| null,
-    reply: Replie,
-    replyMenuModalVisible: boolean,
-    setReplyMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-}
+  user: User | null;
+  reply: Replie;
+  replyMenuModalVisible: boolean;
+  setReplyMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-
-const ReplyModalMenu = ({user, reply, replyMenuModalVisible, setReplyMenuModalVisible}: Props) => {
-
-  const [replyReportModalVisible, setReplyReportModalVisible] = useState(false)
-  const [replyDeleteModalVisible, setReplyDeleteModalVisible] = useState<boolean>(false)
-  const [replyEditModalVisible,setReplyEditModalVisible] = useState(false)
+const ReplyModalMenu = ({
+  user,
+  reply,
+  replyMenuModalVisible,
+  setReplyMenuModalVisible,
+}: Props) => {
+  const [replyReportModalVisible, setReplyReportModalVisible] = useState(false);
+  const [replyDeleteModalVisible, setReplyDeleteModalVisible] =
+    useState<boolean>(false);
+  const [replyEditModalVisible, setReplyEditModalVisible] = useState(false);
 
   const openReplyMenuModal = () => {
     setReplyMenuModalVisible(true);
@@ -38,47 +49,77 @@ const ReplyModalMenu = ({user, reply, replyMenuModalVisible, setReplyMenuModalVi
   };
   return (
     <>
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={replyMenuModalVisible}
-      onRequestClose={closeReplyMenuModal}
-      style={{ height: "30%" }}
-    >
-      <View style={styles.menuModalContainer}>
-        <View style={styles.menuModalContentContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => {setReplyReportModalVisible(true); closeReplyMenuModal()}}>
-            <Text style={styles.buttonText}>Report</Text>
-          </TouchableOpacity>
-          {user ? (
-            user?.displayName == reply.userName ? (
-              <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {setReplyEditModalVisible(true); closeReplyEditModal()}}
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {setReplyDeleteModalVisible(true); closeReplyDeleteModal()}}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              </>
-            ) : null
-          ) : null}
-          <TouchableOpacity style={styles.button} onPress={closeReplyMenuModal}>
-            <Text style={styles.buttonText}>Lukk</Text>
-          </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={replyMenuModalVisible}
+        onRequestClose={closeReplyMenuModal}
+        style={{ height: "30%" }}
+      >
+        <View style={styles.menuModalContainer}>
+          <View style={styles.menuModalContentContainer}>
+            <TouchableOpacity
+              style={styles.close}
+              onPress={closeReplyMenuModal}
+            >
+              <Text style={styles.buttonText}>X</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setReplyReportModalVisible(true);
+                closeReplyMenuModal();
+              }}
+            >
+              <Text style={styles.buttonText}>Report</Text>
+            </TouchableOpacity>
+            {user ? (
+              user?.displayName == reply.userName ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      setReplyEditModalVisible(true);
+                      closeReplyEditModal();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      setReplyDeleteModalVisible(true);
+                      closeReplyDeleteModal();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </TouchableOpacity>
+                </>
+              ) : null
+            ) : null}
+          </View>
         </View>
-      </View>
-    </Modal>
-        <EditReplyModal editReplyModalVisible={replyEditModalVisible} setEditReplyModalVisible={setReplyEditModalVisible} id={reply.postId} displayName={user?.displayName} reply={reply.reply} />
-      <ReportReplyModal reportReplyModalVisible={replyReportModalVisible} setReportReplyModalVisible={setReplyReportModalVisible} id={reply.postId} displayName={user?.displayName}/>
-      <DeleteReplyModal  deleteReplyModalVisible={replyDeleteModalVisible} setDeleteReplyModalVisible={setReplyDeleteModalVisible} id={reply.postId} displayName={user?.displayName} />
+      </Modal>
+      <EditReplyModal
+        editReplyModalVisible={replyEditModalVisible}
+        setEditReplyModalVisible={setReplyEditModalVisible}
+        id={reply.postId}
+        displayName={user?.displayName}
+        reply={reply.reply}
+      />
+      <ReportReplyModal
+        reportReplyModalVisible={replyReportModalVisible}
+        setReportReplyModalVisible={setReplyReportModalVisible}
+        id={reply.postId}
+        displayName={user?.displayName}
+      />
+      <DeleteReplyModal
+        deleteReplyModalVisible={replyDeleteModalVisible}
+        setDeleteReplyModalVisible={setReplyDeleteModalVisible}
+        id={reply.postId}
+        displayName={user?.displayName}
+      />
     </>
-
   );
 };
 
@@ -122,6 +163,7 @@ const styles = StyleSheet.create({
     width: "80%",
     paddingTop: 50,
     borderWidth: 2,
+    position: "relative",
   },
   headline: {
     fontSize: 40,
@@ -184,8 +226,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
-    marginTop: 40,
+    marginBottom: 40,
+    marginTop: 0,
   },
   inputContainer: {
     flexDirection: "row",
@@ -196,6 +238,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 

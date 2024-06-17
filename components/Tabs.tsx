@@ -162,7 +162,7 @@ const Tabs = () => {
             headerShown: false,
             tabBarIcon: ({ focused }) => (
               <Feather
-                name="lock"
+                name="user"
                 size={25}
                 color={focused ? "#FCD3E9" : "white"}
               />

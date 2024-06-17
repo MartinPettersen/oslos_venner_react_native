@@ -1,6 +1,13 @@
 import { User } from "firebase/auth";
 import React, { useState } from "react";
-import { Modal, TouchableOpacity, View, Text, StyleSheet, Dimensions } from "react-native";
+import {
+  Modal,
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import ReportModal from "./ReportModal";
 import DeleteModal from "./DeleteModa";
 import EditModal from "./EditModal";
@@ -8,18 +15,21 @@ import EditModal from "./EditModal";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
-    user: User| null,
-    thread: Thread,
-    menuModalVisible: boolean,
-    setMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-}
+  user: User | null;
+  thread: Thread;
+  menuModalVisible: boolean;
+  setMenuModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+};
 
-
-const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props) => {
-
-  const [reportModalVisible, setReportModalVisible] = useState(false)
-  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false)
-  const [editModalVisible,setEditModalVisible] = useState(false)
+const ModalMenu = ({
+  user,
+  thread,
+  menuModalVisible,
+  setMenuModalVisible,
+}: Props) => {
+  const [reportModalVisible, setReportModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState<boolean>(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
 
   const openMenuModal = () => {
     setMenuModalVisible(true);
@@ -38,47 +48,78 @@ const ModalMenu = ({user, thread, menuModalVisible, setMenuModalVisible}: Props)
   };
   return (
     <>
-    <Modal
-      animationType="none"
-      transparent={true}
-      visible={menuModalVisible}
-      onRequestClose={closeMenuModal}
-      style={{ height: "30%" }}
-    >
-      <View style={styles.menuModalContainer}>
-        <View style={styles.menuModalContentContainer}>
-          <TouchableOpacity style={styles.button} onPress={() => {setReportModalVisible(true); closeMenuModal()}}>
-            <Text style={styles.buttonText}>Report</Text>
-          </TouchableOpacity>
-          {user ? (
-            user?.displayName == thread.userName ? (
-              <>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {setEditModalVisible(true); closeEditModal()}}
-                >
-                  <Text style={styles.buttonText}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.button}
-                  onPress={() => {setDeleteModalVisible(true); closeDeleteModal()}}
-                >
-                  <Text style={styles.buttonText}>Delete</Text>
-                </TouchableOpacity>
-              </>
-            ) : null
-          ) : null}
-          <TouchableOpacity style={styles.button} onPress={closeMenuModal}>
-            <Text style={styles.buttonText}>Lukk</Text>
-          </TouchableOpacity>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={menuModalVisible}
+        onRequestClose={closeMenuModal}
+        style={{ height: "30%" }}
+      >
+        <View style={styles.menuModalContainer}>
+          <View style={styles.menuModalContentContainer}>
+            <TouchableOpacity
+              style={styles.close}
+              onPress={closeMenuModal}
+            >
+              <Text style={styles.buttonText}>X</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => {
+                setReportModalVisible(true);
+                closeMenuModal();
+              }}
+            >
+              <Text style={styles.buttonText}>Report</Text>
+            </TouchableOpacity>
+            {user ? (
+              user?.displayName == thread.userName ? (
+                <>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      setEditModalVisible(true);
+                      closeEditModal();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Edit</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => {
+                      setDeleteModalVisible(true);
+                      closeDeleteModal();
+                    }}
+                  >
+                    <Text style={styles.buttonText}>Delete</Text>
+                  </TouchableOpacity>
+                </>
+              ) : null
+            ) : null}
+          </View>
         </View>
-      </View>
-    </Modal>
-        <EditModal editModalVisible={editModalVisible} setEditModalVisible={setEditModalVisible} id={thread.id} displayName={user?.displayName} content={thread.content} headline={thread.headline} />
-      <ReportModal reportModalVisible={reportModalVisible} setReportModalVisible={setReportModalVisible} id={thread.id} displayName={user?.displayName}/>
-      <DeleteModal  deleteModalVisible={deleteModalVisible} setDeleteModalVisible={setDeleteModalVisible} id={thread.id} displayName={user?.displayName} />
+      </Modal>
+      <EditModal
+        editModalVisible={editModalVisible}
+        setEditModalVisible={setEditModalVisible}
+        id={thread.id}
+        displayName={user?.displayName}
+        content={thread.content}
+        headline={thread.headline}
+      />
+      <ReportModal
+        reportModalVisible={reportModalVisible}
+        setReportModalVisible={setReportModalVisible}
+        id={thread.id}
+        displayName={user?.displayName}
+      />
+      <DeleteModal
+        deleteModalVisible={deleteModalVisible}
+        setDeleteModalVisible={setDeleteModalVisible}
+        id={thread.id}
+        displayName={user?.displayName}
+      />
     </>
-
   );
 };
 
@@ -122,6 +163,7 @@ const styles = StyleSheet.create({
     width: "80%",
     paddingTop: 50,
     borderWidth: 2,
+    position: "relative",
   },
   headline: {
     fontSize: 40,
@@ -184,8 +226,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
-    marginTop: 40,
+    marginBottom: 40,
+    marginTop: 0,
   },
   inputContainer: {
     flexDirection: "row",
@@ -196,6 +238,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 

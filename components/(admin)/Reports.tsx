@@ -6,6 +6,7 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
 import ReplyDisplay from "../(thread)/ReplyDisplay";
+import Report from "./Report";
 
 const { width, height } = Dimensions.get("window");
 
@@ -49,7 +50,7 @@ const Reports = () => {
       <ScrollView contentContainerStyle={styles.scrollView}>
         {reports.length > 0
           ? reports.map((report, index) => (
-              <Text>{report.report}</Text>
+              <Report report={report} key={index} />              
             ))
           : null}
       </ScrollView>
