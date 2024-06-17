@@ -23,7 +23,6 @@ type Props = {
 const { width, height } = Dimensions.get("window");
 
 const ReplyDisplay = ({ reply }: Props) => {
-
   const navigation = useNavigation();
 
   const [newReply, setNewReply] = useState<string>("");
@@ -89,8 +88,12 @@ const ReplyDisplay = ({ reply }: Props) => {
           <TouchableOpacity onPress={() => openReplyMenuModal()}>
             <Text style={styles.dots}>{"\u2022\u2022\u2022"}</Text>
           </TouchableOpacity>
-          <ReplyModalMenu user={user} reply={reply} replyMenuModalVisible={replyMenuModalVisible} setReplyMenuModalVisible={setReplyMenuModalVisible}/>
-
+          <ReplyModalMenu
+            user={user}
+            reply={reply}
+            replyMenuModalVisible={replyMenuModalVisible}
+            setReplyMenuModalVisible={setReplyMenuModalVisible}
+          />
         </View>
         <Text style={styles.displayText}>{reply.reply}</Text>
         <View style={styles.footer}>
@@ -118,6 +121,9 @@ const ReplyDisplay = ({ reply }: Props) => {
         >
           <View style={styles.modalContainer}>
             <View style={styles.modalContentContainer}>
+              <TouchableOpacity style={styles.close} onPress={closeReplyModal}>
+                <Text style={styles.buttonText}>X</Text>
+              </TouchableOpacity>
               <Text style={styles.headline}>Skriv en kommentar</Text>
 
               <View style={styles.inputContainer}>
@@ -227,6 +233,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 

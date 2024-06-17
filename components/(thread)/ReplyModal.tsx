@@ -13,43 +13,46 @@ import { FIRESTORE_DB } from "../../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
-  replyModalVisible: boolean
-  setReplyModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
-  displayName: string | null | undefined,
-  id: string,
+  replyModalVisible: boolean;
+  setReplyModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  displayName: string | null | undefined;
+  id: string;
 };
 
 const { width, height } = Dimensions.get("window");
 
+const ReplyModal = ({
+  replyModalVisible,
+  setReplyModalVisible,
+  id,
+  displayName,
+}: Props) => {
+  const [reply, setReply] = useState<string>("");
 
-const ReplyModal = ({replyModalVisible, setReplyModalVisible, id, displayName}: Props) => {
+  const handleAddReply = async () => {
+    const threadId = uuidv4();
 
-    const [reply, setReply] = useState<string>("");
+    const today = new Date();
+    const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
+      postId: uuidv4(),
+      reply: reply,
+      userName: displayName,
+      parentId: id,
+      createdAt: today.toString(),
+      updatedAt: today.toString(),
+      children: [],
+    });
+    setReply("");
+    closeReplyModal();
+  };
 
-    const handleAddReply = async () => {
-        const threadId = uuidv4();
-    
-        const today = new Date();
-        const doc = await addDoc(collection(FIRESTORE_DB, "replies"), {
-          postId: uuidv4(),
-          reply: reply,
-          userName: displayName,
-          parentId: id,
-          createdAt: today.toString(),
-          updatedAt: today.toString(),
-          children: [],
-        });
-        setReply("");
-        closeReplyModal();
-      };
+  const openReplyModal = () => {
+    setReplyModalVisible(true);
+  };
 
-    const openReplyModal = () => {
-        setReplyModalVisible(true);
-      };
-    
-      const closeReplyModal = () => {
-        setReplyModalVisible(false);
-      };
+  const closeReplyModal = () => {
+    setReplyModalVisible(false);
+  };
 
   return (
     <Modal
@@ -60,7 +63,11 @@ const ReplyModal = ({replyModalVisible, setReplyModalVisible, id, displayName}: 
       style={{ height: "30%" }}
     >
       <View style={styles.modalContainer}>
+        
         <View style={styles.modalContentContainer}>
+        <TouchableOpacity style={styles.close} onPress={closeReplyModal}>
+          <Text style={styles.buttonText}>X</Text>
+        </TouchableOpacity>
           <Text style={styles.headline}>Skriv en kommentar</Text>
 
           <View style={styles.inputContainer}>
@@ -79,10 +86,6 @@ const ReplyModal = ({replyModalVisible, setReplyModalVisible, id, displayName}: 
             style={styles.button}
           >
             <Text style={styles.buttonText}>Svar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={closeReplyModal}>
-            <Text style={styles.text}>Close</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -196,6 +199,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     color: "white",
+  },
+  close: {
+    backgroundColor: "#27272a",
+    width: 30,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 30,
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
 });
 
