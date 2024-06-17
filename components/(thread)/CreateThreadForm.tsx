@@ -73,7 +73,7 @@ const CreateThreadForm = () => {
           contentContainerStyle={styles.scrollContainer}
           keyboardShouldPersistTaps="handled"
         >
-          <Text style={styles.headline}>Opprett Ny Forum Tråd</Text>
+          <Text style={styles.headline}>{"Opprett Ny Forum Tråd"}</Text>
           <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
               <Text style={styles.text}>Tittel: </Text>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   headline: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: "bold",
     marginBottom: 20,
   },

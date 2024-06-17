@@ -182,7 +182,7 @@ const Thread = () => {
         </View>
 
         <Text style={styles.threadText}>{thread.userName}</Text>
-        <Text style={styles.threadText}>{thread.content}</Text>
+        <Text style={[styles.threadText, { flexWrap: 'wrap', textAlign: 'left' }]}>{thread.content}</Text>
         <View style={styles.footer}>
           <TouchableOpacity
             onPress={() =>
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: width,
     paddingTop: 50,
+    flexWrap: 'wrap'
   },
   modalContainer: {
     flex: 1,
@@ -263,7 +264,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#27272a",
     width: "90%",
     padding: 8,
-    height: "40%",
+
     justifyContent: "space-between",
     marginBottom: 40,
   },
