@@ -8,6 +8,10 @@ import {
   Modal,
   Dimensions,
   TextInput,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import { v4 as uuidv4 } from "uuid";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
@@ -119,36 +123,47 @@ const ReplyDisplay = ({ reply }: Props) => {
           onRequestClose={closeReplyModal}
           style={{ height: "30%" }}
         >
-          <View style={styles.modalContainer}>
-            <View style={styles.modalContentContainer}>
-              <TouchableOpacity style={styles.close} onPress={closeReplyModal}>
-                <Text style={styles.buttonText}>X</Text>
-              </TouchableOpacity>
-              <Text style={styles.headline}>Skriv en kommentar</Text>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <KeyboardAvoidingView
+              behaviour="padding"
+              style={styles.modalContainer}
+            >
+              <View style={styles.modalContentContainer}>
+                <TouchableOpacity
+                  style={styles.close}
+                  onPress={closeReplyModal}
+                >
+                  <Text style={styles.buttonText}>X</Text>
+                </TouchableOpacity>
+                <Text style={styles.headline}>Skriv en kommentar</Text>
 
-              <View style={styles.inputContainer}>
-                <Text style={styles.text}>Svar: </Text>
-                <TextInput
-                  placeholder="Svar"
-                  onChangeText={(text: string) => setNewReply(text)}
-                  value={newReply}
-                  style={styles.inputField}
-                />
+
+                <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+                <View style={styles.inputContainer}>
+                  <Text style={styles.text}>Svar: </Text>
+                  <TextInput
+                    placeholder="Svar"
+                    onChangeText={(text: string) => setNewReply(text)}
+                    value={newReply}
+                    multiline={true}
+                    style={styles.inputField}
+                  />
+                </View>
+                </ScrollView>
+                <TouchableOpacity
+                  onPress={() => handleAddReply()}
+                  disabled={newReply === ""}
+                  style={styles.button}
+                >
+                  <Text style={styles.buttonText}>Svar</Text>
+                </TouchableOpacity>
+
               </View>
-
-              <TouchableOpacity
-                onPress={() => handleAddReply()}
-                disabled={newReply === ""}
-                style={styles.button}
-              >
-                <Text style={styles.buttonText}>Svar</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={closeReplyModal}>
-                <Text style={styles.text}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+            </KeyboardAvoidingView>
+          </TouchableWithoutFeedback>
         </Modal>
       </View>
       {reply.reply.length > 0 ? (
@@ -215,7 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
+    marginBottom: 40,
     marginTop: 40,
   },
   inputContainer: {
@@ -243,6 +258,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    width: "100%",
   },
 });
 

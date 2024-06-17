@@ -8,6 +8,10 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  KeyboardAvoidingView,
+  ScrollView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
@@ -62,24 +66,30 @@ const ReplyModal = ({
       onRequestClose={closeReplyModal}
       style={{ height: "30%" }}
     >
-      <View style={styles.modalContainer}>
-        
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+      <KeyboardAvoidingView behaviour="padding" style={styles.modalContainer}>
         <View style={styles.modalContentContainer}>
-        <TouchableOpacity style={styles.close} onPress={closeReplyModal}>
-          <Text style={styles.buttonText}>X</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.close} onPress={closeReplyModal}>
+            <Text style={styles.buttonText}>X</Text>
+          </TouchableOpacity>
           <Text style={styles.headline}>Skriv en kommentar</Text>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.text}>Svar: </Text>
-            <TextInput
-              placeholder="Svar"
-              onChangeText={(text: string) => setReply(text)}
-              value={reply}
-              style={styles.inputField}
-            />
-          </View>
-
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={styles.inputContainer}>
+              <Text style={styles.text}>Svar: </Text>
+              <TextInput
+                placeholder="Svar"
+                onChangeText={(text: string) => setReply(text)}
+                value={reply}
+                multiline={true}
+                style={styles.inputField}
+              />
+            </View>
+          </ScrollView>
           <TouchableOpacity
             onPress={() => handleAddReply()}
             disabled={reply === ""}
@@ -88,7 +98,9 @@ const ReplyModal = ({
             <Text style={styles.buttonText}>Svar</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+
     </Modal>
   );
 };
@@ -174,7 +186,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginVertical: 10,
     textDecorationLine: "underline",
-    width: "40%",
+    width: "80%",
   },
   buttonText: {
     fontSize: 20,
@@ -187,7 +199,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
+    marginBottom: 40,
     marginTop: 40,
   },
   inputContainer: {
@@ -209,6 +221,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    width: "100%",
   },
 });
 
