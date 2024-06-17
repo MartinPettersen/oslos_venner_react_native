@@ -16,6 +16,10 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import { FIRESTORE_DB } from "../../../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
@@ -79,6 +83,9 @@ const EditReplyModal = ({
       onRequestClose={closeEditReplyModal}
       style={{ height: "30%" }}
     >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
+<KeyboardAvoidingView behaviour="padding" style={styles.modalContainer}> 
       <View style={styles.modalContainer}>
         <View style={styles.modalContentContainer}>
         <TouchableOpacity style={styles.close} onPress={closeEditReplyModal}>
@@ -86,24 +93,37 @@ const EditReplyModal = ({
           </TouchableOpacity>
           <Text style={styles.headline}>Oppdater innholdet</Text>
 
+
+          <ScrollView
+            contentContainerStyle={styles.scrollContainer}
+            keyboardShouldPersistTaps="handled"
+          >
+
+
           <View style={styles.inputContainer}>
             <Text style={styles.text}>Svar: </Text>
             <TextInput
               placeholder=""
               onChangeText={(text: string) => setNewReply(text)}
               value={newReply}
+              multiline={true}
               style={styles.inputField}
             />
           </View>
+
+          </ScrollView>
+
 
           <TouchableOpacity
             onPress={() => handleEditReply()}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Oppdater</Text>
+            <Text style={styles.buttonText}>Oppdater gutf</Text>
           </TouchableOpacity>
         </View>
       </View>
+      </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -202,7 +222,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
+    marginBottom: 40,
     marginTop: 40,
   },
   inputContainer: {
@@ -225,6 +245,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 20,
   },
 });
 
