@@ -118,7 +118,7 @@ const EditReplyModal = ({
             onPress={() => handleEditReply()}
             style={styles.button}
           >
-            <Text style={styles.buttonText}>Oppdater gutf</Text>
+            <Text style={styles.buttonText}>Oppdater</Text>
           </TouchableOpacity>
         </View>
       </View>

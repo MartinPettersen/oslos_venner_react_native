@@ -16,6 +16,10 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  ScrollView,
 } from "react-native";
 import { FIRESTORE_DB } from "../../../firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
@@ -25,8 +29,8 @@ type Props = {
   setEditModalVisible: React.Dispatch<React.SetStateAction<boolean>>;
   displayName: string | null | undefined;
   id: string;
-  headline: string,
-  content: string,
+  headline: string;
+  content: string;
 };
 
 const { width, height } = Dimensions.get("window");
@@ -36,7 +40,8 @@ const EditModal = ({
   setEditModalVisible,
   id,
   displayName,
-  headline, content
+  headline,
+  content,
 }: Props) => {
   const [newContent, setNewContent] = useState<string>(content);
   const [newHeadline, setNewHeadline] = useState<string>(headline);
@@ -45,23 +50,26 @@ const EditModal = ({
     const today = new Date();
 
     try {
-        const q = query(collection(FIRESTORE_DB, "threads"), where("id", "==", id));
-        const querySnapshot = await getDocs(q);
-  
-        querySnapshot.forEach(async (doc) => {
-          await updateDoc(doc.ref, {
-            content: newContent,
-            headline: newHeadline,
-            updatedAt: today.toString(),
-          });
+      const q = query(
+        collection(FIRESTORE_DB, "threads"),
+        where("id", "==", id)
+      );
+      const querySnapshot = await getDocs(q);
+
+      querySnapshot.forEach(async (doc) => {
+        await updateDoc(doc.ref, {
+          content: newContent,
+          headline: newHeadline,
+          updatedAt: today.toString(),
         });
-  
-        setNewContent("");
-        setNewHeadline("");
-        closeEditModal();
-      } catch (error) {
-        console.error("Error updating thread: ", error);
-      }
+      });
+
+      setNewContent("");
+      setNewHeadline("");
+      closeEditModal();
+    } catch (error) {
+      console.error("Error updating thread: ", error);
+    }
   };
 
   const openEditModal = () => {
@@ -80,40 +88,49 @@ const EditModal = ({
       onRequestClose={closeEditModal}
       style={{ height: "30%" }}
     >
-      <View style={styles.modalContainer}>
-        <View style={styles.modalContentContainer}>
-        <TouchableOpacity style={styles.close} onPress={closeEditModal}>
-            <Text style={styles.buttonText}>X</Text>
-          </TouchableOpacity>
-          <Text style={styles.headline}>Oppdater innholdet</Text>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView behaviour="padding" style={styles.modalContainer}>
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContentContainer}>
+              <TouchableOpacity style={styles.close} onPress={closeEditModal}>
+                <Text style={styles.buttonText}>X</Text>
+              </TouchableOpacity>
+              <Text style={styles.headline}>Oppdater innholdet</Text>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.text}>Tittel: </Text>
-            <TextInput
-              placeholder=""
-              onChangeText={(text: string) => setNewHeadline(text)}
-              value={newHeadline}
-              style={styles.inputField}
-            />
+              <ScrollView
+                contentContainerStyle={styles.scrollContainer}
+                keyboardShouldPersistTaps="handled"
+              >
+                <View style={styles.inputContainer}>
+                  <Text style={styles.text}>Tittel: </Text>
+                  <TextInput
+                    placeholder=""
+                    onChangeText={(text: string) => setNewHeadline(text)}
+                    value={newHeadline}
+                    style={styles.inputField}
+                  />
+                </View>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.text}>innhold: </Text>
+                  <TextInput
+                    placeholder=""
+                    onChangeText={(text: string) => setNewContent(text)}
+                    value={newContent}
+                    multiline={true}
+                    style={styles.inputField}
+                  />
+                </View>
+              </ScrollView>
+              <TouchableOpacity
+                onPress={() => handleEditThread()}
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Oppdater</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View style={styles.inputContainer}>
-            <Text style={styles.text}>innhold: </Text>
-            <TextInput
-              placeholder=""
-              onChangeText={(text: string) => setNewContent(text)}
-              value={newContent}
-              style={styles.inputField}
-            />
-          </View>
-
-          <TouchableOpacity
-            onPress={() => handleEditThread()}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Oppdater</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 };
@@ -212,7 +229,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 60,
-    marginBottom: 0,
+    marginBottom: 40,
     marginTop: 40,
   },
   inputContainer: {
@@ -234,6 +251,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    paddingBottom: 20,
   },
 });
 
