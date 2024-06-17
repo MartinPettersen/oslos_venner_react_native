@@ -63,6 +63,7 @@ const Report = ({ report }: Props) => {
               });
           });
           setThreads(threads);
+          console.log(threads)
         },
       }
     );
@@ -78,7 +79,8 @@ const Report = ({ report }: Props) => {
     : null}
     { threads.length > 0 ? 
       
-      <ReportThread thread={threads[0]} />
+      <ReportThread thread={threads[0]} reportId={report.reportId} />
+      
     : null}
     </View>
   );
