@@ -1,27 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet, ScrollView, Dimensions } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Animated, useWindowDimensions } from "react-native";
 import ForumDisplay from "./ForumDisplay";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { collection, onSnapshot } from "@firebase/firestore";
 
-const { width, height } = Dimensions.get("window");
-
-const FORUMS = ["Robotics", "Books", "Sport"];
-
-export interface Forum {
-  label: string;
-  threads: string[];
-  createdBy: string;
-  updatedAt: string;
-}
-
 const Forums = ({ navigation }: any) => {
-
-  const [forums, setForums] = useState<Forum[]>([])
+  const [forums, setForums] = useState<Forum[]>([]);
+  const { width, height } = useWindowDimensions();
+  const [backgroundColorAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    const forumRef = collection(FIRESTORE_DB, 'forums')
-
+    const forumRef = collection(FIRESTORE_DB, 'forums');
     const subscriber = onSnapshot(forumRef, {
       next: (snapshot) => {
         const forums: Forum[] = [];
@@ -31,63 +20,58 @@ const Forums = ({ navigation }: any) => {
             threads: doc.data().threads,
             createdBy: doc.data().createdBy,
             updatedAt: doc.data().updatedAt,
-          })
-        })
-        setForums(forums)
+          });
+        });
+        setForums(forums);
       }
-    })
-    
-  }, [])
+    });
+
+    // Cleanup function
+    return () => subscriber();
+  }, []);
+
+  useEffect(() => {
+    Animated.timing(backgroundColorAnim, {
+      toValue: 1,
+      duration: 300, // Adjust duration as needed
+      useNativeDriver: false,
+    }).start();
+  }, [width, height]);
+
+  const interpolatedBackgroundColor = backgroundColorAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: ["#FCD3E9", "#FCD3E9"], // Adjust to your desired background color
+  });
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={[styles.container, { backgroundColor: interpolatedBackgroundColor }]}>
       <Text style={styles.headline}>Forums</Text>
-      <ScrollView contentContainerStyle={styles.scrollView}>
+      <ScrollView
+        contentContainerStyle={[styles.scrollView, { minHeight: height - 120 }]}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+      >
         {forums.map((forum, index) => (
-          
-          <ForumDisplay key={index} forum={forum.label} threads={forum.threads} navigation={navigation}/>
+          <ForumDisplay key={index} forum={forum.label} threads={forum.threads} navigation={navigation} />
         ))}
       </ScrollView>
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FCD3E9",
     alignItems: "center",
     justifyContent: "flex-start",
-    width: width,
-    height: height,
     paddingTop: 50,
   },
   headline: {
     fontSize: 30,
     marginBottom: 20,
   },
-  display: {
-    backgroundColor: "#27272a",
-    width: "80%",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 60,
-    marginBottom: 20,
-  },
-  text: {
-    fontSize: 20,
-    marginVertical: 10,
-  },
-  displayText: {
-    fontSize: 30,
-    marginVertical: 10,
-    color: "white",
-  },
   scrollView: {
     flexGrow: 1,
-    width: width,
-    height: "30%",
-    justifyContent: "center",
     alignItems: "center",
     paddingVertical: 20,
   },

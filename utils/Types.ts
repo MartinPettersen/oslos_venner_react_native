@@ -19,3 +19,12 @@ type Thread = {
     createdAt: string,
     updatedAt: string,
 }
+
+interface Report {
+    createdAt: string;
+    report: string;
+    reportId: string;
+    subjectId: string;
+    updatedAt: string;
+    userName: string;
+  }

@@ -19,7 +19,7 @@ const Reports = () => {
     });
   }, []);
 
-  const [reports, setReports] = useState([]);
+  const [reports, setReports] = useState<Report[]>([]);
 
     
 

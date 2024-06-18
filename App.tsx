@@ -8,12 +8,12 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ForumContainer from "./screens/ForumContainer";
 import ThreadPage from "./screens/ThreadPage";
-import { Feather } from "@expo/vector-icons"
+import { Feather } from "@expo/vector-icons";
 import Tabs from "./components/Tabs";
 import { useEffect, useState } from "react";
 import { User, onAuthStateChanged } from "firebase/auth";
 import { FIREBASE_AUTH } from "./firebaseConfig";
-
+import * as ScreenOrientation from "expo-screen-orientation";
 
 const Tab = createBottomTabNavigator();
 
@@ -25,14 +25,31 @@ const Tab = createBottomTabNavigator();
 */
 
 export default function App() {
+  const unlockOrientation = async () => {
+    await ScreenOrientation.unlockAsync();
+  };
+
+  unlockOrientation();
+
+  const lockToPortrait = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.PORTRAIT_UP
+    );
+  };
+
+  const lockToLandscape = async () => {
+    await ScreenOrientation.lockAsync(
+      ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
+    );
+  };
 
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    onAuthStateChanged( FIREBASE_AUTH, (user) => {
-      setUser(user)
-    })
-  },[])
+    onAuthStateChanged(FIREBASE_AUTH, (user) => {
+      setUser(user);
+    });
+  }, []);
 
   return (
     <NavigationContainer>

@@ -7,7 +7,7 @@ import ReportThread from "./ReportThread";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
-  report: any;
+  report: Report;
 };
 
 const Report = ({ report }: Props) => {
@@ -21,7 +21,7 @@ const Report = ({ report }: Props) => {
       query(forumRef, where("postId", "==", report.subjectId)),
       {
         next: (snapshot) => {
-          const replies: any[] = [];
+          const replies: Replie[] = [];
           snapshot.docs.forEach((doc) => {
             replies.push({
               postId: doc.data().postId,
@@ -49,7 +49,7 @@ const Report = ({ report }: Props) => {
       query(forumRef, where("id", "==", report.subjectId)),
       {
         next: (snapshot) => {
-          const threads: any[] = [];
+          const threads: Thread[] = [];
           snapshot.docs.forEach((doc) => {
             threads.push({
                 id: doc.data().id,
@@ -60,6 +60,7 @@ const Report = ({ report }: Props) => {
                 replies: doc.data().replies,
                 createdBy: doc.data().createdBy,
                 updatedAt: doc.data().updatedAt,
+                createdAt: doc.data().createdAt,
               });
           });
           setThreads(threads);
