@@ -4,10 +4,11 @@ import ReportPost from "./ReportPost";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import ReportThread from "./ReportThread";
+import { Replie, Thread, Report as ReportType } from "../../utils/Types";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
-  report: Report;
+  report: ReportType;
 };
 
 const Report = ({ report }: Props) => {

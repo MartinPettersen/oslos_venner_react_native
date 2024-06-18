@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import AdminDeleteThread from "./AdminDeleteThread";
+import { Thread } from "../../utils/Types";
 const { width, height } = Dimensions.get("window");
 
 type Props = {
