@@ -7,6 +7,7 @@ import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
 import ReplyDisplay from "../(thread)/ReplyDisplay";
 import Report from "./Report";
+import { Report as ReportType } from '../../utils/Types'
 
 const { width, height } = Dimensions.get("window");
 
@@ -19,7 +20,7 @@ const Reports = () => {
     });
   }, []);
 
-  const [reports, setReports] = useState<Report[]>([]);
+  const [reports, setReports] = useState<ReportType[]>([]);
 
     
 
@@ -28,16 +29,21 @@ const Reports = () => {
 
     const subscriber = onSnapshot(forumRef, {
       next: (snapshot) => {
-        const reports: any[] = [];
+        const reports: ReportType[] = [];
         snapshot.docs.forEach(doc => {
-          reports.push({
-            report: doc.data().report,
-            userName: doc.data().userName,
-            subjectId: doc.data().subjectId,
-            reportId: doc.data().reportId,
-
-          })
+          const data = doc.data() as ReportType; // Cast to ReportType
+          const report: ReportType = {
+            report: data.report,
+            userName: data.userName,
+            subjectId: data.subjectId,
+            reportId: data.reportId,
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt
+          };
+          reports.push(report);
         })
+        console.log("the report")
+        console.log(reports)
         setReports(reports)
       }
     })

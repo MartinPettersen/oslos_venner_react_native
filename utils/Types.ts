@@ -1,4 +1,4 @@
-type Replie = {
+export type Replie = {
     postId: string,
     reply: string,
     userName: string,
@@ -8,7 +8,7 @@ type Replie = {
     children: string[]
 }
 
-type Thread = {
+export type Thread = {
     id: string,
     headline: string,
     userName: string,
@@ -20,7 +20,7 @@ type Thread = {
     updatedAt: string,
 }
 
-interface Report {
+export interface Report {
     createdAt: string;
     report: string;
     reportId: string;
