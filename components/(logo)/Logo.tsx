@@ -1,10 +1,10 @@
 import React from "react";
 //import  Alex_Brush  from "@expo-google-fonts/dev";
-import AppLoading from "expo-app-loading";
+//import { AppLoading } from "expo";
 //import { AlexBrush_400Regular } from '@expo-google-fonts/alex-brush';
 import { useFonts, AlexBrush_400Regular } from "@expo-google-fonts/alex-brush";
 
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, ActivityIndicator } from "react-native";
 
 const Logo = () => {
   let [fontsLoaded] = useFonts({
@@ -12,7 +12,10 @@ const Logo = () => {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return (
+    <View style={styles.container}>
+    <ActivityIndicator size={"large"} color={"orange"} />
+  </View>)
   }
 
   return (

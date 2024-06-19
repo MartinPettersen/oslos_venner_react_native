@@ -16,9 +16,10 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import RepliesContainer from "./RepliesContainer";
 import ReplyModalMenu from "./(replyModalMenu)/ReplyModelMenu";
+import { Replie, RootStackParamList } from "../../utils/Types";
 
 type Props = {
   reply: Replie;
@@ -27,7 +28,7 @@ type Props = {
 const { width, height } = Dimensions.get("window");
 
 const ReplyDisplay = ({ reply }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const [newReply, setNewReply] = useState<string>("");
 

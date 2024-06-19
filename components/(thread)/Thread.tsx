@@ -18,11 +18,12 @@ import {
   where,
 } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { v4 as uuidv4 } from "uuid";
 import { User, onAuthStateChanged } from "firebase/auth";
 import ModalMenu from "./(modalmenu)/ModalMenu";
 import ReplyModal from "./ReplyModal";
+import { Replie, RootStackParamList, Thread as ThreadType } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,8 +48,12 @@ const REPLIES = [
   },
 ];
 
-const Thread = () => {
-  const [thread, setThread] = useState<Thread | null>(null);
+type Props = {
+  id: string,
+}
+
+const Thread = ({id}: Props) => {
+  const [thread, setThread] = useState<ThreadType | null>(null);
 
   const [replyModalVisible, setReplyModalVisible] = useState(false);
   const openReplyModal = () => {
@@ -69,17 +74,14 @@ const Thread = () => {
     setMenuModalVisible(false);
   };
 
-  const navigation = useNavigation();
-
-  const route = useRoute();
-  const { id } = route.params;
-
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  
   useEffect(() => {
     const forumRef = collection(FIRESTORE_DB, "threads");
 
     const subscriber = onSnapshot(query(forumRef, where("id", "==", id)), {
       next: (snapshot) => {
-        const threads: Thread[] = [];
+        const threads: ThreadType[] = [];
         snapshot.docs.forEach((doc) => {
           threads.push({
             id: doc.data().id,

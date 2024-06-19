@@ -25,24 +25,7 @@ const Tab = createBottomTabNavigator();
 */
 
 export default function App() {
-  const unlockOrientation = async () => {
-    await ScreenOrientation.unlockAsync();
-  };
-
-  unlockOrientation();
-
-  const lockToPortrait = async () => {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.PORTRAIT_UP
-    );
-  };
-
-  const lockToLandscape = async () => {
-    await ScreenOrientation.lockAsync(
-      ScreenOrientation.OrientationLock.LANDSCAPE_LEFT
-    );
-  };
-
+  
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {

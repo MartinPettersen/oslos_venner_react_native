@@ -3,7 +3,7 @@
     "name": "oslos_venner_react_native",
     "slug": "oslos_venner_react_native",
     "version": "1.0.0",
-    "orientation": "default",
+    "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
