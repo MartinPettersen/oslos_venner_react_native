@@ -43,7 +43,7 @@ export type RootStackParamList = {
     CreateThreadPage: undefined;
     AdminReportPage: undefined;
     CreateForum: undefined;
-    ThreadPage: undefined;
+    ThreadPage: { id: string };
     Thread: { id: string };
     CreateUserPage: undefined;
     Login: undefined;

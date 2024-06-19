@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
+import { RootStackParamList } from "../../utils/Types";
 
 type Props = {
   subject: string;
@@ -13,7 +14,7 @@ type Props = {
 };
 
 const ThreadDisplay = ({ subject, author, date, parentId, id }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
 
   const [replies, setReplies] = useState(0);
