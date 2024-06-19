@@ -15,9 +15,8 @@ import {
   signInWithEmailAndPassword,
   updateProfile,
 } from "firebase/auth";
-import axios from 'axios';
-
-
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native"; 
 const { width, height } = Dimensions.get("window");
 
 const CreateUser = () => {
@@ -27,7 +26,7 @@ const CreateUser = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-
+  const navigation = useNavigation(); 
 
   const handleSignUp = async () => {
     setLoading(true);
@@ -37,14 +36,16 @@ const CreateUser = () => {
         email,
         password
       );
-      await updateProfile(auth.currentUser, {
-        displayName: userName,
-      });
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: userName,
+        });
 
-      if (email === 'admin2@gmail.com') {
-        await axios.post('http://localhost:3000/setAdminRole', { email });
+        if (email === "admin2@gmail.com") {
+          await axios.post("http://localhost:3000/setAdminRole", { email });
+        }
+        navigation.navigate("Home"); 
       }
-
     } catch (error) {
       console.log(error);
     } finally {

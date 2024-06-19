@@ -6,7 +6,6 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import AdminReportPage from "../../screens/AdminReportPage";
 import AdminDeletePost from "./AdminDeletePost";
 import { Replie } from "../../utils/Types";
 const { width, height } = Dimensions.get("window");

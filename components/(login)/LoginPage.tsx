@@ -14,16 +14,20 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
-const LoginPage = () => {
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, "Login">;
+};
+
+const LoginPage = ({navigation}: Props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-
-  const navigation = useNavigation();
 
   const handleLogin = async () => {
     setLoading(true);

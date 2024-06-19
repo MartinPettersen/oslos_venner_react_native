@@ -42,7 +42,7 @@ function RepliesContainer({ parentId }: Props) {
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       {replies.map((reply, index) => (
-        <View style={styles.borderline}>
+        <View key={index} style={styles.borderline}>
           <ReplyDisplay key={index} reply={reply} />
         </View>
       ))}
