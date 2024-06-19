@@ -3,9 +3,10 @@ import { View, Text, StyleSheet, ScrollView, Animated, useWindowDimensions } fro
 import ForumDisplay from "./ForumDisplay";
 import { FIRESTORE_DB } from "../../firebaseConfig";
 import { collection, onSnapshot } from "@firebase/firestore";
+import { ForumType } from "../../utils/Types";
 
 const Forums = ({ navigation }: any) => {
-  const [forums, setForums] = useState<Forum[]>([]);
+  const [forums, setForums] = useState<ForumType[]>([]);
   const { width, height } = useWindowDimensions();
   const [backgroundColorAnim] = useState(new Animated.Value(0));
 
@@ -13,12 +14,13 @@ const Forums = ({ navigation }: any) => {
     const forumRef = collection(FIRESTORE_DB, 'forums');
     const subscriber = onSnapshot(forumRef, {
       next: (snapshot) => {
-        const forums: Forum[] = [];
+        const forums: ForumType[] = [];
         snapshot.docs.forEach(doc => {
           forums.push({
             label: doc.data().label,
             threads: doc.data().threads,
             createdBy: doc.data().createdBy,
+            createdAt: doc.data().createdAt,
             updatedAt: doc.data().updatedAt,
           });
         });

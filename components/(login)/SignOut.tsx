@@ -8,10 +8,16 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
-const SignOut = ({ navigation }) => {
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList>;
+};
+
+const SignOut = ({ navigation }: Props) => {
   const handleSignOut = () => {
     FIREBASE_AUTH.signOut().then(() => {
       navigation.replace("Login");

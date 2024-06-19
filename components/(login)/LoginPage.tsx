@@ -39,7 +39,7 @@ const LoginPage = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behaviour="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.headline}>Login</Text>
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>

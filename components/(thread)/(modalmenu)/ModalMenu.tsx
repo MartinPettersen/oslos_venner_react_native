@@ -11,6 +11,7 @@ import {
 import ReportModal from "./ReportModal";
 import DeleteModal from "./DeleteModa";
 import EditModal from "./EditModal";
+import { Thread } from "../../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 

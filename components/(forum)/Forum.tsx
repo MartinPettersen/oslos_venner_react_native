@@ -15,27 +15,8 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
 const { width, height } = Dimensions.get("window");
+import { Thread as ThreadType } from "../../utils/Types";
 
-const THREADS = [
-  {
-    subject: "Robotics are cool",
-    author: "Human",
-    date: "10/10/2020",
-    replies: "40",
-  },
-  {
-    subject: "Robots are better",
-    author: "NotaRobot",
-    date: "12/10/2022",
-    replies: "10",
-  },
-  {
-    subject: "Evil robot Overlords",
-    author: "Subterfuge",
-    date: "10/09/2008",
-    replies: "1",
-  },
-];
 
 const Forum = () => {
   const navigation = useNavigation();
@@ -44,7 +25,7 @@ const Forum = () => {
     useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
   const { forum } = route.params;
 
-  const [threads, setThreads] = useState([]);
+  const [threads, setThreads] = useState<ThreadType[]>([]);
 
   useEffect(() => {
     const forumRef = collection(FIRESTORE_DB, "threads");
@@ -53,7 +34,7 @@ const Forum = () => {
       query(forumRef, where("forumLabel", "==", forum)),
       {
         next: (snapshot) => {
-          const threads: any[] = [];
+          const threads: ThreadType[] = [];
           snapshot.docs.forEach((doc) => {
             threads.push({
               id: doc.data().id,
@@ -63,6 +44,7 @@ const Forum = () => {
               forumLabel: doc.data().forumLabel,
               replies: doc.data().replies,
               createdBy: doc.data().createdBy,
+              createdAt: doc.data().createdAt,
               updatedAt: doc.data().updatedAt,
             });
           });
@@ -107,8 +89,8 @@ const Forum = () => {
             key={index}
             subject={thread.headline}
             author={thread.userName}
-            date={thread.date}
-            replies={thread.id}
+            date={thread.createdAt}
+            parentId={thread.forumLabel}
             id={thread.id}
           />
         ))}

@@ -54,7 +54,7 @@ const CreateUser = () => {
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView behaviour="padding" style={styles.container}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <Text style={styles.headline}>Opprett Bruker</Text>
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>

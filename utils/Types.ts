@@ -8,6 +8,14 @@ export type Replie = {
     children: string[]
 }
 
+export type ForumType = {
+    createdAt: string,
+    createdBy: string,
+    label: string,
+    threads: string[]
+    updatedAt: string,
+}
+
 export type Thread = {
     id: string,
     headline: string,
@@ -27,9 +35,9 @@ export interface Report {
     subjectId: string;
     updatedAt: string;
     userName: string;
-  }
+}
 
-  export type RootStackParamList = {
+export type RootStackParamList = {
     Home: undefined;
     Forum: undefined;
     CreateThreadPage: undefined;
@@ -42,4 +50,4 @@ export interface Report {
     PrivateUserPage: undefined;
     AdminPage: undefined;
     SignOut: undefined;
-  };
+};

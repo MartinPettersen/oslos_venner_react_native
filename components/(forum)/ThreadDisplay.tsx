@@ -50,7 +50,7 @@ const ThreadDisplay = ({ subject, author, date, parentId, id }: Props) => {
       <View style={styles.display}>
         <Text style={styles.displayText}>{subject}</Text>
         <Text style={styles.displayText}>{author}</Text>
-        <Text style={styles.displayText}>{date}</Text>
+        <Text style={styles.displayText}>{date.slice(4, 15)}</Text>
         <Text style={styles.displayText}>{`#${replies}`}</Text>
       </View>
     </TouchableOpacity>
