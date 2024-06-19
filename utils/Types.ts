@@ -40,7 +40,7 @@ export interface Report {
 export type RootStackParamList = {
     Home: undefined;
     Forum: undefined;
-    CreateThreadPage: undefined;
+    CreateThreadPage: { forum: string };
     AdminReportPage: undefined;
     CreateForum: undefined;
     ThreadPage: { id: string };

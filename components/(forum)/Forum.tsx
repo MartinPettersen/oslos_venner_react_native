@@ -9,17 +9,18 @@ import {
 } from "react-native";
 import ForumDisplay from "./ForumDisplay";
 import ThreadDisplay from "./ThreadDisplay";
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
+import { NavigationProp, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, onAuthStateChanged } from "firebase/auth";
 const { width, height } = Dimensions.get("window");
-import { Thread as ThreadType } from "../../utils/Types";
+import { RootStackParamList, Thread as ThreadType } from "../../utils/Types";
 
 
 const Forum = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
 
   const route =
     useRoute<RouteProp<Record<string, ForumScreenParams>, string>>();
