@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { ForumScreenParams } from "../../utils/ForumScreenParams";
+import { RootStackParamList } from "../../utils/Types";
 
 type Props = {
   forum: string;
@@ -13,7 +14,8 @@ const { width, height } = Dimensions.get("window");
 
 
 const ForumDisplay = ({ forum, threads }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   return (
     <View style={styles.container}>
       { forum ?  

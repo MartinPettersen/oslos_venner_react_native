@@ -32,7 +32,7 @@ const Admin = () => {
         setLoading(false);
       } else {
         setIsAdmin(false);
-        navigation.navigate("Forum");
+        navigation.navigate("Login");
         setLoading(false);
       }
     });
@@ -42,7 +42,7 @@ const Admin = () => {
 
   useEffect(() => {
     if (!isAdmin && !loading) {
-      navigation.navigate("Forum");
+      navigation.navigate("Login");
     }
   }, [isAdmin, loading]);
 
