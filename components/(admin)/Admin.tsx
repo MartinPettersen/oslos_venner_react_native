@@ -8,12 +8,8 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from "react-native";
-import ForumDisplay from "../(forum)/ForumDisplay";
-import ThreadDisplay from "../(forum)/ThreadDisplay";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
-import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
+import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { User, getIdTokenResult, onAuthStateChanged } from "firebase/auth";
-import ReplyDisplay from "../(thread)/ReplyDisplay";
 import { useNavigation } from "@react-navigation/native";
 
 const { width, height } = Dimensions.get("window");

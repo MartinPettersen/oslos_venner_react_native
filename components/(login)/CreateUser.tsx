@@ -16,7 +16,8 @@ import {
   updateProfile,
 } from "firebase/auth";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/native"; 
+import { NavigationProp, useNavigation } from "@react-navigation/native"; 
+import { RootStackParamList } from "../../utils/Types";
 const { width, height } = Dimensions.get("window");
 
 const CreateUser = () => {
@@ -26,7 +27,7 @@ const CreateUser = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const auth = FIREBASE_AUTH;
-  const navigation = useNavigation(); 
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleSignUp = async () => {
     setLoading(true);
