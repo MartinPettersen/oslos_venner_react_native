@@ -10,12 +10,14 @@ import {
 } from "react-native";
 import { FIREBASE_AUTH } from "../../firebaseConfig";
 import { User, getIdTokenResult, onAuthStateChanged } from "firebase/auth";
-import { useNavigation } from "@react-navigation/native";
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
 const Admin = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+
   const [user, setUser] = useState<User | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
