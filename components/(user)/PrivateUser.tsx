@@ -6,6 +6,7 @@ import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIREBASE_AUTH, FIRESTORE_DB } from "../../firebaseConfig";
 import { User, getIdTokenResult, onAuthStateChanged } from "firebase/auth";
 import ReplyDisplay from "../(thread)/ReplyDisplay";
+import { Replie, Thread } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
@@ -16,8 +17,10 @@ const PrivateUser = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, async (user) => {
       setUser(user);
-      getThreads(user?.displayName);
-      getReplies(user?.displayName);
+      if (user?.displayName) {
+        getThreads(user.displayName);
+        getReplies(user.displayName);
+      }
 
       if (user) {
         const idTokenResult = await getIdTokenResult(user);
@@ -30,7 +33,7 @@ const PrivateUser = () => {
     return () => unsubscribe();
   }, []);
 
-  const [threads, setThreads] = useState([]);
+  const [threads, setThreads] = useState<Thread[]>([]);
 
   const getThreads = (userName: string) => {
     const forumRef = collection(FIRESTORE_DB, "threads");
@@ -39,7 +42,7 @@ const PrivateUser = () => {
       query(forumRef, where("userName", "==", userName)),
       {
         next: (snapshot) => {
-          const threads: any[] = [];
+          const threads: Thread[] = [];
           snapshot.docs.forEach((doc) => {
             threads.push({
               id: doc.data().id,
@@ -49,6 +52,7 @@ const PrivateUser = () => {
               forumLabel: doc.data().forumLabel,
               replies: doc.data().replies,
               createdBy: doc.data().createdBy,
+              createdAt: doc.data().createdAt,
               updatedAt: doc.data().updatedAt,
             });
           });
@@ -99,8 +103,8 @@ const PrivateUser = () => {
                 key={index}
                 subject={thread.headline}
                 author={thread.userName}
-                date={thread.date}
-                replies={thread.replies.length}
+                date={thread.createdAt}
+                parentId={"0"}
                 id={thread.id}
               />
             ))
