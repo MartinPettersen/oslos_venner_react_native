@@ -60,7 +60,7 @@ const ThreadDisplay = ({ subject, author, date, parentId, id }: Props) => {
 const styles = StyleSheet.create({
   display: {
     backgroundColor: "#27272a",
-    width: "90%",
+    width: "50%",
     justifyContent: "space-between",
     alignItems: "center",
     height: 50,
