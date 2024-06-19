@@ -67,7 +67,7 @@ const CreateThreadForm = () => {
   }, []);
 
   return (
-    <KeyboardAvoidingView behaviour="padding" style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <View style={styles.container}>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}

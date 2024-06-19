@@ -3,6 +3,7 @@ import { ScrollView, View, StyleSheet, Dimensions } from "react-native";
 import ReplyDisplay from "./ReplyDisplay";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { FIRESTORE_DB } from "../../firebaseConfig";
+import { Replie } from "../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 
