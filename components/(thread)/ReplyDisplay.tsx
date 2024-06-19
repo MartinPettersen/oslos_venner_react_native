@@ -126,7 +126,7 @@ const ReplyDisplay = ({ reply }: Props) => {
         >
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <KeyboardAvoidingView
-              behaviour="padding"
+              behavior="padding"
               style={styles.modalContainer}
             >
               <View style={styles.modalContentContainer}>
