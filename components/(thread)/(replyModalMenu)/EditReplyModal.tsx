@@ -85,7 +85,7 @@ const EditReplyModal = ({
     >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-<KeyboardAvoidingView behaviour="padding" style={styles.modalContainer}> 
+<KeyboardAvoidingView behavior="padding" style={styles.modalContainer}> 
       <View style={styles.modalContainer}>
         <View style={styles.modalContentContainer}>
         <TouchableOpacity style={styles.close} onPress={closeEditReplyModal}>

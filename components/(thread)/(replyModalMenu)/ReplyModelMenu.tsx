@@ -11,6 +11,7 @@ import {
 import DeleteReplyModal from "./DeleteReplyModal";
 import EditReplyModal from "./EditReplyModal";
 import ReportReplyModal from "./ReportReplyModal";
+import { Replie } from "../../../utils/Types";
 
 const { width, height } = Dimensions.get("window");
 

@@ -25,17 +25,22 @@ export interface Forum {
   createdBy: string;
   updatedAt: string;
 }
+interface RouteParams {
+  forum?: string;
+}
 
 const CreateThreadForm = () => {
   const route = useRoute();
 
   const threadId = uuidv4();
 
+  const params = route.params as RouteParams;
+
   const [id, setId] = useState<string>(threadId);
   const [headline, setHeadline] = useState<string>("");
   const [userName, setUserName] = useState<string>("test_dude");
   const [content, setContent] = useState<string>("");
-  const [forumLabel, setForumLabel] = useState<string>(route.params.forum);
+  const [forumLabel, setForumLabel] = useState<string>(params.forum || "");
   const [replies, setReplies] = useState<any[]>([]);
   const [createdAt, setCreatedAt] = useState<string>("");
   const [updatedAt, setUpdatedAt] = useState<string>("");
