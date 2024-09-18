@@ -2,16 +2,9 @@
 
 ### Introduksjon
 
-Oslo's venner er en forum app som hjelper brukere med å finne venner basert på sinne interesser. Den er sterkt inspirert av et tidligere forum jeg lagde. [https://oslos-venner-final.vercel.app/](https://oslos-venner-final.vercel.app/)
+Oslo's venner er en forum app som hjelper brukere med å finne venner basert på sine interesser. Den er sterkt inspirert av et tidligere forum jeg lagde. [https://oslos-venner-final.vercel.app/](https://oslos-venner-final.vercel.app/)
 
 ### Hvordan appen fungerer
-
-1. **Produktidentifikasjon:** Brukeren skanner et produkt med appens barcodescanner.
-2. **Prisinformasjon:** Appen henter prisinformasjon for produktet fra Kassalapp.
-3. **Geolokasjon:** Appen bruker brukerens enhetsgeolokasjon for å identifisere butikker i nærheten som tilbyr produktet.
-4. **Presentasjon av resultater:** Appen viser en liste over butikker med prisinformasjon og avstand til hver butikk. Hvis en butikk blir valgt så viser den også et kart som viser veien til den valgte butikken.
-
-### Fordeler
 
 * **Konto:** Brukeren kan opprette en konto og opprette forum tråder og kommentarer, slette forum tråder og kommentarer, rapportere brukere og kommentarer.
 * **Admin:** Admin kan opprette forum, slette forum, brukere og kommentarer.
@@ -33,4 +26,4 @@ Oslo's venner er en forum app som hjelper brukere med å finne venner basert på
 9. expo_APP_ID=
 10. expo_MEASUREMENT_ID=
 
-**Takk for din interesse for Low Price Detective!**
+**Takk for din interesse for Oslo's Venner React Native!**
